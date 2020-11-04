@@ -56,11 +56,14 @@ This is the **Kaplan-Meier Estimate** $\hat S(t)$ of the Survival function $S(t)
 ## Leukemia Kaplan-Meier plot
 
 ```{r, echo=FALSE, message=FALSE}
-leuk <- read.csv("leuk.csv")
 library(survival)
-kmfit <- survfit(Surv(time, cens)~group, data=leuk)
 library(survminer)
-ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
+library(tidyverse)
+leuk <- read_csv("leuk.csv")
+leuk <- leuk %>%
+  mutate(group = factor(group, levels = c("Placebo", "6 MP")))
+kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
+survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
 ``````
 
 # The Hazard Function
@@ -80,15 +83,32 @@ $$h(t) = \lim_{s \to 0} \frac{Pr(t \leq T < t+s | T \ge t)}{s}$$
 
 ```{r, echo=FALSE}
 ## KM plot
-library(survminer)
-survminer::ggsurvplot(kmfit, lty.surv=1:2, col.surv=2:1, xlab="Time (weeks)", ylab="Survival Probability")
+survminer::ggsurvplot(
+  kmfit,
+  lty.surv = 1:2,
+  col.surv = 2:1,
+  xlab = "Time (weeks)",
+  ylab = "Survival Probability"
+)
 ## hazard plot
 library(muhaz)
-haztreat = with(leuk[leuk$group=="6 MP", ], muhaz(time, cens))
-hazcontrol = with(leuk[leuk$group=="Placebo", ], muhaz(time, cens))
-plot(hazcontrol, lwd=2, xlab="Follow-up time (weeks)", xlim=c(0, 18))
-lines(haztreat, lty=2, lwd=2, col="red")
-legend("topright", legend=c("Control", "Treatment"), lty=1:2, lwd=2, col=c("black", "red"))
+haztreat = with(leuk[leuk$group == "6 MP",], muhaz(time, cens))
+hazcontrol = with(leuk[leuk$group == "Placebo",], muhaz(time, cens))
+plot(hazcontrol,
+     lwd = 2,
+     xlab = "Follow-up time (weeks)",
+     xlim = c(0, 18))
+lines(haztreat,
+      lty = 2,
+      lwd = 2,
+      col = "red")
+legend(
+  "topright",
+  legend = c("Control", "Treatment"),
+  lty = 1:2,
+  lwd = 2,
+  col = c("black", "red")
+)
 ```
 
 \footnotesize
@@ -115,23 +135,44 @@ legend("topright", legend=c("Control", "Treatment"), lty=1:2, lwd=2, col=c("blac
 ## The hazard function h(t) (leukemia dataset)
 
 ```{r, echo=FALSE}
-par(mfrow=c(1,2))
 ## KM plot
-kmplot(kmfit, lty.surv=1:2, col.surv=2:1, xlab="Time (weeks)", ylab="Survival Probability")
+ggsurvplot(
+  kmfit,
+  lty.surv = 1:2,
+  col.surv = 2:1,
+  xlab = "Time (weeks)",
+  ylab = "Survival Probability"
+)
 ## hazard plot
-library(muhaz)
-haztreat = with(leuk[leuk$group=="6 MP", ], muhaz(time, cens))
-hazcontrol = with(leuk[leuk$group=="Placebo", ], muhaz(time, cens))
-plot(hazcontrol, lwd=2, xlab="Follow-up time (weeks)", xlim=c(0, 18))
-lines(haztreat, lty=2, lwd=2, col="red")
-legend("topright", legend=c("Control", "Treatment"), lty=1:2, lwd=2, col=c("black", "red"))
+haztreat = with(leuk[leuk$group == "6 MP",], muhaz(time, cens))
+hazcontrol = with(leuk[leuk$group == "Placebo",], muhaz(time, cens))
+plot(hazcontrol,
+     lwd = 2,
+     xlab = "Follow-up time (weeks)",
+     xlim = c(0, 18))
+lines(haztreat,
+      lty = 2,
+      lwd = 2,
+      col = "red")
+legend(
+  "topright",
+  legend = c("Control", "Treatment"),
+  lty = 1:2,
+  lwd = 2,
+  col = c("black", "red")
+)
 ```
 
 ## Log-minus-log plot
 
 ```{r, echo=FALSE}
-ggsurvplot(kmfit, fun="cloglog", risk.table = FALSE, linetype=1:2,
-           main="log-minus-log plot for Leukemia dataset")
+ggsurvplot(
+  kmfit,
+  fun = "cloglog",
+  risk.table = FALSE,
+  linetype = 1:2,
+  main = "log-minus-log plot for Leukemia dataset"
+)
 ```
 
 ## Recall previous regression models
@@ -194,8 +235,7 @@ Multiplicative or additive model?
 
 \tiny
 ```{r, echo=FALSE, message=FALSE}
-leuk$group <- relevel(leuk$group, ref="Placebo")
-coxfit <- coxph(Surv(time, cens)~group, data=leuk)
+coxfit <- coxph(Surv(time, cens) ~ group, data = leuk)
 summary(coxfit)
 ```
 

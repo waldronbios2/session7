@@ -7,6 +7,8 @@ Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
 Description: Description of this session
 Imports:
+    muhaz,
+    survminer,
     tidyverse
 Suggests:
     pkgdown,
