@@ -23,3 +23,7 @@ always_allow_html: true
 1. Exercise 1
 
 
+```{r}
+leuk <- readr::read_csv("leuk.csv")
+```
+

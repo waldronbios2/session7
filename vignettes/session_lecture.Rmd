@@ -144,6 +144,9 @@ ggsurvplot(
   ylab = "Survival Probability"
 )
 ## hazard plot
+leuk %>% group_by(group) %>% 
+  summarise(haz = list(muhaz(time, cens)))
+
 haztreat = with(leuk[leuk$group == "6 MP",], muhaz(time, cens))
 hazcontrol = with(leuk[leuk$group == "Placebo",], muhaz(time, cens))
 plot(hazcontrol,
@@ -239,15 +242,23 @@ coxfit <- coxph(Surv(time, cens) ~ group, data = leuk)
 summary(coxfit)
 ```
 
-# Parametric versus semi-parametric models
+## Semi-parametric model
 
-* Cox proportional hazards model is semi-parametric
+* Cox proportional hazards model is _semi-parametric_:
     + assumes proportional hazards (PH), but no assumption on $h_0(t)$
-* Alternative parametric models model the baseline hazard
-    + e.g. Weibull regression
-
-* Cox model is considered more robust if PH assumption is not violated
+    + robust if PH assumption is not violated
     + time-dependent covariates may resolve apparent violations of the PH assumption.
+
+# Parametric models
+
+## What are "parametric" models?
+
+* Alternative parametric approaches model the baseline hazard with a small number of additional _parameters_ estimated along with coefficients, e.g.:
+    + exponential: hazard function is contant over time, survival function is exponential
+    + Weibull: hazard function is polynomial
+    + many other options for assumption of distributions
+* 
+
 
 
 # Summary: assumptions of Cox PH model
