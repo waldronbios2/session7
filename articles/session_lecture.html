@@ -411,11 +411,7 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 <li>New users excludes those who had received a lipid lowering drug from three years before to six months after cohort entry</li>
 </ul>
 </li>
-<li>This is a surprising finding because of confounding: people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.
-<ul>
-<li>would result in HR &gt; 1</li>
-</ul>
-</li>
+<li>HR&gt;1 was expected:people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.</li>
 <li>This is a result of an analysis error. Why?</li>
 </ul>
 <ul>
@@ -428,9 +424,10 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 <ul>
 <li>What was the analysis error?
 <ul>
-<li>all person days between cohort entry and end of follow-up were <strong>classified as treated</strong> for those who met the statin user definition, regardless of the date on which they met this definition and as untreated for non-users</li>
+<li>“new statin user” group was defined based on future initiation: knowledge unknown at the time of entry into the study</li>
+<li>guaranteed no events for statin users from cohort entry to start of statin use</li>
 <li>thus all persons in the <em>treated</em> group are “immortal” from time 0 until the initiation of statin treatment</li>
-<li>this period of immortality makes treatment look more effective</li>
+<li>this period of immortality made treatment look more effective</li>
 </ul>
 </li>
 </ul>
