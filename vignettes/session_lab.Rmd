@@ -19,7 +19,8 @@ always_allow_html: true
 1. Fit a Cox proportional hazard model
 2. Create a stratified Kaplan-Meier plot
 3. Fit exponential and Weibull accelerated failure time models
-4. Create a DAG using dagitty
+4. Fit a model using strata and a time-dependent covariate
+5. Create a DAG using dagitty
 
 **Exercises**
 
