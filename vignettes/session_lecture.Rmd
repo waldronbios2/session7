@@ -286,7 +286,7 @@ Source: [Using Time Dependent Covariates and Time Dependent Coefficients in the 
     + New users excludes those who had received a lipid lowering drug from three years before to six months after cohort entry
 * This is a surprising finding because of confounding: people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.
     + would result in HR > 1
-* Why?
+* This is a result of an analysis error. Why?
 
 \tiny
 
@@ -294,7 +294,7 @@ Source: [Using Time Dependent Covariates and Time Dependent Coefficients in the 
 
 ## Immortal time bias example (cont'd)
 
-* Why?
+* What was the analysis error?
     + all person days between cohort entry and end of follow-up were **classified as treated** for those who met the statin user definition, regardless of the date on which they met this definition and as untreated for non-users
     + thus all persons in the *treated* group are "immortal" from time 0 until the initiation of statin treatment
     + this period of immortality makes treatment look more effective
