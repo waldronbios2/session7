@@ -103,17 +103,80 @@
     
 <p><strong>Learning objectives</strong></p>
 <ol style="list-style-type: decimal">
-<li>Learning objective 1</li>
+<li>Fit a Cox proportional hazard model</li>
+<li>Create a stratified Kaplan-Meier plot</li>
+<li>Fit exponential and Weibull proportional hazard models</li>
+<li>Create a DAG using dagitty</li>
 </ol>
 <p><strong>Exercises</strong></p>
-<ol style="list-style-type: decimal">
-<li>Exercise 1</li>
-</ol>
+<div id="fit-a-cox-proportional-hazard-model-to-the-leukemia-6-mp-clinical-trial-dataset" class="section level1">
+<h1 class="hasAnchor">
+<a href="#fit-a-cox-proportional-hazard-model-to-the-leukemia-6-mp-clinical-trial-dataset" class="anchor"></a>Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset</h1>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/rpkgs/survminer/">survminer</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">leuk</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"leuk.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">group</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"6 MP"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></pre></div>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   time = col_double(),
+##   cens = col_double(),
+##   group = col_character()
+## )</code></pre>
 </div>
+<div id="create-a-stratified-kaplan-meier-plot" class="section level1">
+<h1 class="hasAnchor">
+<a href="#create-a-stratified-kaplan-meier-plot" class="anchor"></a>Create a stratified Kaplan-Meier plot</h1>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="va">kmfit</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span><span class="op">)</span>
+<span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span><span class="op">(</span><span class="va">kmfit</span>, risk.table <span class="op">=</span> <span class="cn">TRUE</span>, linetype<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></pre></div>
+<pre><code>## Warning: Vectorized input to `element_text()` is not officially supported.
+## Results may be unexpected or may change in future versions of ggplot2.</code></pre>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+</div>
+<div id="fit-exponential-and-weibull-proportional-hazard-models" class="section level1">
+<h1 class="hasAnchor">
+<a href="#fit-exponential-and-weibull-proportional-hazard-models" class="anchor"></a>Fit exponential and Weibull proportional hazard models</h1>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="va">weibullfit</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span>, dist <span class="op">=</span> <span class="st">"weibull"</span><span class="op">)</span>
+<span class="va">expfit</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span>, dist <span class="op">=</span> <span class="st">"exponential"</span><span class="op">)</span>
+<span class="va">gaussianfit</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span>, dist <span class="op">=</span> <span class="st">"gaussian"</span><span class="op">)</span></pre></div>
+</div>
+<div id="draw-a-dag-starting-from-dagitty-net-and-re-create-it-in-r" class="section level1">
+<h1 class="hasAnchor">
+<a href="#draw-a-dag-starting-from-dagitty-net-and-re-create-it-in-r" class="anchor"></a>Draw a DAG starting from dagitty.net and re-create it in R</h1>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.dagitty.net">dagitty</a></span><span class="op">)</span>
+<span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html">dagitty</a></span><span class="op">(</span><span class="st">'
+dag {
+bb="-2,-3,3,3"
+collider [pos="0,1"]
+confounder [pos="0,-1"]
+exposure [exposure,pos="-1,0"]
+mediator [pos="0,0"]
+outcome [outcome,pos="1,0"]
+confounder -&gt; exposure
+confounder -&gt; outcome
+confounder -&gt; mediator
+exposure -&gt; collider
+exposure -&gt; mediator
+mediator -&gt; outcome
+outcome -&gt; collider
+}
+'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+</div>
+  </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
