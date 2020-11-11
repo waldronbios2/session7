@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: person("Levi", "Waldron", , "lwaldron.research@gmail.com", role = c("aut", "cre"),
       comment = c(ORCID = "0000-0003-2725-0694"))
 Maintainer: Levi Waldron <lwaldron.research@gmail.com>
-Description: Proportional Hazards models
+Description: Proportional Hazards and AFT models
 Imports:
     muhaz,
     survminer,
