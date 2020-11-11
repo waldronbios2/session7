@@ -120,11 +120,14 @@ outline}\label{learning-objectives-and-outline}}
 \begin{enumerate}
 \tightlist
 \item
-  Define the hazard function and proportional hazards
-\item
   Define proportional hazards
 \item
   Perform and interpret Cox proportional hazards regression
+\item
+  Identify the differences between parametric and semi-parametric
+  survival models
+\item
+  Identify situations when a parametric survival model might be useful
 \end{enumerate}
 
 \end{frame}
@@ -482,8 +485,8 @@ Multiplicative or additive model?
 
 \end{frame}
 
-\begin{frame}{Semi-parametric model}
-\protect\hypertarget{semi-parametric-model}{}
+\begin{frame}{Cox PH is a semi-parametric model}
+\protect\hypertarget{cox-ph-is-a-semi-parametric-model}{}
 
 \begin{itemize}
 \tightlist
@@ -504,46 +507,8 @@ Multiplicative or additive model?
 
 \end{frame}
 
-\hypertarget{parametric-models}{%
-\section{Parametric models}\label{parametric-models}}
-
-\begin{frame}[fragile]{What are ``parametric'' models?}
-\protect\hypertarget{what-are-parametric-models}{}
-
-\begin{itemize}
-\tightlist
-\item
-  ``Parametric'' models estimate additional \emph{parameters} for the
-  baseline hazard, e.g.:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{Weibull}: hazard function is a polynomial
-  \item
-    \textbf{exponential}: hazard function is constant over time,
-    survival function is exponential (special case of Weibull):
-    e.g.~healthy population with randomly occuring events
-  \item
-    many other options for assumption of distributions
-  \end{itemize}
-\item
-  Can be more powerful if assumption is correct
-\item
-  Allows smooth estimation of baseline hazard, extrapolation
-\item
-  Still a proportional hazards model
-\item
-  Fit the same way but using \texttt{survival::survreg}
-\end{itemize}
-
-\end{frame}
-
-\hypertarget{summary-proportional-hazards-assumption}{%
-\section{Summary: proportional hazards
-assumption}\label{summary-proportional-hazards-assumption}}
-
 \begin{frame}{Summary: proportional hazards assumption}
+\protect\hypertarget{summary-proportional-hazards-assumption}{}
 
 \begin{itemize}
 \tightlist
@@ -561,6 +526,115 @@ assumption}\label{summary-proportional-hazards-assumption}}
   \end{itemize}
 \item
   Uninformative censoring
+\end{itemize}
+
+\end{frame}
+
+\hypertarget{parametric-survival-models}{%
+\section{Parametric survival models}\label{parametric-survival-models}}
+
+\begin{frame}{What are ``parametric'' survival models?}
+\protect\hypertarget{what-are-parametric-survival-models}{}
+
+\begin{itemize}
+\tightlist
+\item
+  ``Parametric'' models estimate additional \emph{parameters} for the
+  baseline hazard, e.g.:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Weibull}: hazard function is a polynomial
+  \item
+    \textbf{exponential}: hazard function is constant over time,
+    survival function is exponential (special case of Weibull):
+    e.g.~healthy population with randomly occurring events
+  \item
+    many other options for assumption of distributions
+  \end{itemize}
+\item
+  In most common implementation a log-transform of the time variable is
+  used
+
+  \begin{itemize}
+  \tightlist
+  \item
+    then can be interpreted as \emph{Accelerated Failure Time} (AFT)
+    models.
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Coefficients in parametric models}
+\protect\hypertarget{coefficients-in-parametric-models}{}
+
+\begin{itemize}
+\tightlist
+\item
+  The interpretation of \(\beta\) coefficients is different:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Cox model: \(log(HR)\)
+  \item
+    AFT models: \(log(survival time ratio)\)
+  \item
+    The sign is \emph{opposite} (\emph{i.e.} if one is positive the
+    other is negative)
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Why use a parametric survival model?}
+\protect\hypertarget{why-use-a-parametric-survival-model}{}
+
+\begin{itemize}
+\tightlist
+\item
+  Can be more powerful if assumption is correct
+
+  \begin{itemize}
+  \tightlist
+  \item
+    may help with small numbers of events
+  \end{itemize}
+\item
+  Extra capabilities:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    smooth estimation of baseline hazard
+  \item
+    extrapolation
+  \item
+    complicated censoring
+  \end{itemize}
+\item
+  Easy to interpret: coefficients are \(log(survival time ratio)\)
+\item
+  Easy to fit: replace \texttt{survival::coxph} with
+  \texttt{survival::survreg}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Why not to use a parametric survival model?}
+\protect\hypertarget{why-not-to-use-a-parametric-survival-model}{}
+
+\begin{itemize}
+\tightlist
+\item
+  Depend on correct specification of baseline hazard model
+\item
+  Even if correctly specified, may not provide much improvement in
+  efficiency
+\item
+  Still make a proportionality assumption, on survival functions
 \end{itemize}
 
 \end{frame}

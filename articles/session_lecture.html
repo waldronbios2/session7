@@ -108,9 +108,10 @@
 <h2 class="hasAnchor">
 <a href="#learning-objectives" class="anchor"></a>Learning objectives</h2>
 <ol style="list-style-type: decimal">
-<li>Define the hazard function and proportional hazards</li>
 <li>Define proportional hazards</li>
 <li>Perform and interpret Cox proportional hazards regression</li>
+<li>Identify the differences between parametric and semi-parametric survival models</li>
+<li>Identify situations when a parametric survival model might be useful</li>
 </ol>
 </div>
 <div id="outline" class="section level2">
@@ -349,9 +350,9 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 ## Wald test            = 14.53  on 1 df,   p=1e-04
 ## Score (logrank) test = 17.25  on 1 df,   p=3e-05</code></pre>
 </div>
-<div id="semi-parametric-model" class="section level2">
+<div id="cox-ph-is-a-semi-parametric-model" class="section level2">
 <h2 class="hasAnchor">
-<a href="#semi-parametric-model" class="anchor"></a>Semi-parametric model</h2>
+<a href="#cox-ph-is-a-semi-parametric-model" class="anchor"></a>Cox PH is a semi-parametric model</h2>
 <ul>
 <li>Cox proportional hazards model is <em>semi-parametric</em>:
 <ul>
@@ -363,34 +364,9 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 </li>
 </ul>
 </div>
-</div>
-<div id="parametric-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#parametric-models" class="anchor"></a>Parametric models</h1>
-<div id="what-are-parametric-models" class="section level2">
+<div id="summary-proportional-hazards-assumption" class="section level2">
 <h2 class="hasAnchor">
-<a href="#what-are-parametric-models" class="anchor"></a>What are “parametric” models?</h2>
-<ul>
-<li>“Parametric” models estimate additional <em>parameters</em> for the baseline hazard, e.g.:
-<ul>
-<li>
-<strong>Weibull</strong>: hazard function is a polynomial</li>
-<li>
-<strong>exponential</strong>: hazard function is constant over time, survival function is exponential (special case of Weibull): e.g. healthy population with randomly occuring events</li>
-<li>many other options for assumption of distributions</li>
-</ul>
-</li>
-<li>Can be more powerful if assumption is correct</li>
-<li>Allows smooth estimation of baseline hazard, extrapolation</li>
-<li>Still a proportional hazards model</li>
-<li>Fit the same way but using <code><a href="https://rdrr.io/pkg/survival/man/survreg.html">survival::survreg</a></code>
-</li>
-</ul>
-</div>
-</div>
-<div id="summary-proportional-hazards-assumption" class="section level1">
-<h1 class="hasAnchor">
-<a href="#summary-proportional-hazards-assumption" class="anchor"></a>Summary: proportional hazards assumption</h1>
+<a href="#summary-proportional-hazards-assumption" class="anchor"></a>Summary: proportional hazards assumption</h2>
 <ul>
 <li>Constant hazard <em>ratio</em> between groups over time (proportional hazards)</li>
 <li>A linear association between the natural log of the relative hazard and the predictors (log-linearity)
@@ -400,6 +376,77 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 </li>
 <li>Uninformative censoring</li>
 </ul>
+</div>
+</div>
+<div id="parametric-survival-models" class="section level1">
+<h1 class="hasAnchor">
+<a href="#parametric-survival-models" class="anchor"></a>Parametric survival models</h1>
+<div id="what-are-parametric-survival-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#what-are-parametric-survival-models" class="anchor"></a>What are “parametric” survival models?</h2>
+<ul>
+<li>“Parametric” models estimate additional <em>parameters</em> for the baseline hazard, e.g.:
+<ul>
+<li>
+<strong>Weibull</strong>: hazard function is a polynomial</li>
+<li>
+<strong>exponential</strong>: hazard function is constant over time, survival function is exponential (special case of Weibull): e.g. healthy population with randomly occurring events</li>
+<li>many other options for assumption of distributions</li>
+</ul>
+</li>
+<li>In most common implementation a log-transform of the time variable is used
+<ul>
+<li>then can be interpreted as <em>Accelerated Failure Time</em> (AFT) models.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="coefficients-in-parametric-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#coefficients-in-parametric-models" class="anchor"></a>Coefficients in parametric models</h2>
+<ul>
+<li>The interpretation of <span class="math inline">\(\beta\)</span> coefficients is different:
+<ul>
+<li>Cox model: <span class="math inline">\(log(HR)\)</span>
+</li>
+<li>AFT models: <span class="math inline">\(log(survival time ratio)\)</span>
+</li>
+<li>The sign is <em>opposite</em> (<em>i.e.</em> if one is positive the other is negative)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="why-use-a-parametric-survival-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#why-use-a-parametric-survival-model" class="anchor"></a>Why use a parametric survival model?</h2>
+<ul>
+<li>Can be more powerful if assumption is correct
+<ul>
+<li>may help with small numbers of events</li>
+</ul>
+</li>
+<li>Extra capabilities:
+<ul>
+<li>smooth estimation of baseline hazard</li>
+<li>extrapolation</li>
+<li>complicated censoring</li>
+</ul>
+</li>
+<li>Easy to interpret: coefficients are <span class="math inline">\(log(survival time ratio)\)</span>
+</li>
+<li>Easy to fit: replace <code><a href="https://rdrr.io/pkg/survival/man/coxph.html">survival::coxph</a></code> with <code><a href="https://rdrr.io/pkg/survival/man/survreg.html">survival::survreg</a></code>
+</li>
+</ul>
+</div>
+<div id="why-not-to-use-a-parametric-survival-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#why-not-to-use-a-parametric-survival-model" class="anchor"></a>Why not to use a parametric survival model?</h2>
+<ul>
+<li>Depend on correct specification of baseline hazard model</li>
+<li>Even if correctly specified, may not provide much improvement in efficiency</li>
+<li>Still make a proportionality assumption, on survival functions</li>
+</ul>
+</div>
 </div>
   </div>
 
