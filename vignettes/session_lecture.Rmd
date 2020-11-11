@@ -29,21 +29,22 @@ institute: CUNY SPH Biostatistics 2
 
 1. Define proportional hazards
 2. Perform and interpret Cox proportional hazards regression
-3. Identify the differences between parametric and semi-parametric survival models
-4. Identify situations when a parametric survival model might be useful
+3. Define time-dependent covariates and their use
+4. Identify the differences between parametric and semi-parametric survival models
+5. Identify situations when a parametric survival model might be useful
 
 ## Outline
 
-1. Review of Survival function and Kaplan-Meier estimator
-2. Hazard function
-3. Cox regression
-    + the Cox proportional hazards model
-    + proportional hazards
-    + interpretation and inference from the Cox model
+1. Review of survival and hazard functions
+2. The Cox proportional hazards model
+    + interpretation and inference
+    + what are proportional hazards
+    + when hazards aren't proportional
+3. Parametric vs semi-parametric survival models
 
 * Vittinghoff sections 6.1-6.2, 6.4
 
-# Review of Survival and hazard functions
+# Review of survival and hazard functions
 
 ## Recall leukemia Example
 * Study of 6-mercaptopurine (6-MP) maintenance therapy for children in remission from acute lymphoblastic leukemia (ALL)
@@ -80,7 +81,7 @@ survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
 $$h(t) = \lim_{s \to 0} \frac{Pr(t \leq T < t+s | T \ge t)}{s}$$
 
 
-## Leukemia dataset $S(t) $
+## Leukemia dataset $S(t)$
 
 Survival function $S(t)$
 
@@ -122,7 +123,7 @@ legend(
 ```
 
 \footnotesize
-* See http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html for R + SAS instructions
+[SAS and R Source code](http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html)
 
 ## The Hazard Ratio (HR)
 
