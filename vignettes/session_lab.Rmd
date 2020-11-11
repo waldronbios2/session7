@@ -1,5 +1,5 @@
 ---
-title: "Session 7 lab exercise: What it's about"
+title: "Session 7 lab exercise: Cox proportional Hazards"
 author: "Levi Waldron"
 institute: "CUNY SPH Biostatistics 2"
 clean: false
@@ -23,6 +23,13 @@ always_allow_html: true
 5. Create a DAG using dagitty
 
 **Exercises**
+
+1. Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
+2. Create a stratified Kaplan-Meier plot
+3. Fit exponential and Weibull accelerated failure time (AFT) models
+4. Fit a stratified coxph model with a time-dependent covariate using an example from ?coxph
+5. Draw a DAG starting from dagitty.net and re-create it in R
+
 
 # Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
 

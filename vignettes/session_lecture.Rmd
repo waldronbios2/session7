@@ -47,6 +47,7 @@ institute: CUNY SPH Biostatistics 2
 # Review of survival and hazard functions
 
 ## Recall leukemia Example
+
 * Study of 6-mercaptopurine (6-MP) maintenance therapy for children in remission from acute lymphoblastic leukemia (ALL)
 * 42 patients achieved remission from induction therapy and were then randomized in equal numbers to 6-MP or placebo.
 * Survival time studied was from randomization until relapse.
@@ -245,7 +246,7 @@ Multiplicative or additive model?
     + equivalent to $H_0: HR=1, H_a: HR \neq 1$
 * CIs typically obtained from Wald Test, reported for $HR$
 
-## CoxPH regression for Leukemia dataset
+## Cox PH regression for Leukemia dataset
 
 \tiny
 ```{r, echo=FALSE, message=FALSE}
