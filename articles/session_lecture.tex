@@ -163,9 +163,9 @@ outline}\label{learning-objectives-and-outline}}
 
 \end{frame}
 
-\hypertarget{review-of-st-and-km-estimator}{%
-\section{Review of S(t) and KM
-estimator}\label{review-of-st-and-km-estimator}}
+\hypertarget{review-of-survival-and-hazard-functions}{%
+\section{Review of Survival and hazard
+functions}\label{review-of-survival-and-hazard-functions}}
 
 \begin{frame}{Recall leukemia Example}
 \protect\hypertarget{recall-leukemia-example}{}
@@ -210,23 +210,19 @@ function \(S(t)\).
 
 \end{frame}
 
-\hypertarget{the-hazard-function}{%
-\section{The Hazard Function}\label{the-hazard-function}}
-
 \begin{frame}{The hazard function h(t)}
 \protect\hypertarget{the-hazard-function-ht}{}
 
 \begin{itemize}
 \item
-  \emph{Definition}: (review) The \emph{survival function} at time t,
-  denoted \(S(t)\), is the probability of being event-free at t.
-  Equivalently, it is the probability that the survival time is greater
-  than t.
+  \emph{Definition}: The \emph{survival function} at time t, denoted
+  \(S(t)\), is the probability of being event-free at t. Equivalently,
+  it is the probability that the survival time is greater than t.
 \item
-  \emph{Definition}: (review) The \emph{cumulative event function} at
-  time t, denoted \(F(t)\), is the probability that the event has
-  occurred by time t, or equivalently, the probability that the survival
-  time is less than or equal to t. \(F(t) = 1-S(t)\).
+  \emph{Definition}: The \emph{cumulative event function} at time t,
+  denoted \(F(t)\), is the probability that the event has occurred by
+  time t, or equivalently, the probability that the survival time is
+  less than or equal to t. \(F(t) = 1-S(t)\).
 \item
   \emph{Definition}: The \emph{hazard function} \(h(t)\) is the
   short-term event rate for subjects who have not yet experienced an
@@ -244,11 +240,21 @@ function \(S(t)\).
 
 \end{frame}
 
-\begin{frame}{Leukemia dataset h(t)}
-\protect\hypertarget{leukemia-dataset-ht}{}
+\begin{frame}{Leukemia dataset \$S(t) \$}
+\protect\hypertarget{leukemia-dataset-st}{}
+
+Survival function \(S(t)\)
 
 \includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-2-1.pdf}
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-2-2.pdf}
+
+\end{frame}
+
+\begin{frame}{Leukemia dataset \(h(t)\)}
+\protect\hypertarget{leukemia-dataset-ht}{}
+
+Hazard function \(h(t)\)
+
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-3-1.pdf}
 
 \footnotesize
 
@@ -320,20 +326,20 @@ function \(S(t)\).
 \begin{frame}[fragile]{The hazard function h(t) (leukemia dataset)}
 \protect\hypertarget{the-hazard-function-ht-leukemia-dataset}{}
 
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-3-1.pdf}
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-4-1.pdf}
 
 \begin{verbatim}
 ## `summarise()` ungrouping output (override with `.groups` argument)
 \end{verbatim}
 
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-3-2.pdf}
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-4-2.pdf}
 
 \end{frame}
 
 \begin{frame}{Log-minus-log plot}
 \protect\hypertarget{log-minus-log-plot}{}
 
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-4-1.pdf}
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-5-1.pdf}
 
 \end{frame}
 
@@ -526,6 +532,116 @@ Multiplicative or additive model?
   \end{itemize}
 \item
   Uninformative censoring
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{What to do when proportional hazards doesn't hold?}
+\protect\hypertarget{what-to-do-when-proportional-hazards-doesnt-hold}{}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Time-dependent covariates}
+\item
+  \textbf{Definition}: A time-dependent covariate is a predictor whose
+  values may vary with time.
+\item
+  \textbf{Basic rule}: You cannot look into the future in your analysis
+  (even though it took place in the past) E.g.:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    breast cancer chemotherapy patients divided into groups based on how
+    much of the planned dose they received
+  \item
+    patients divided into groups based on early response to treatment
+    (shrinkage of tumor, lowering of cholesterol, etc)
+  \item
+    interpolation of the values of a laboratory test linearly between
+    observation times
+  \item
+    removing subjects who do not finish the treatment plan
+  \item
+    imputing the date of an adverse event as midway between observation
+    times
+  \end{itemize}
+\end{itemize}
+
+Source:
+\href{https://cran.r-project.org/web/packages/survival/vignettes/timedep.pdf}{Using
+Time Dependent Covariates and Time Dependent Coefficients in the Cox
+Model}
+
+\end{frame}
+
+\begin{frame}{Immortal time bias example}
+\protect\hypertarget{immortal-time-bias-example}{}
+
+\begin{itemize}
+\tightlist
+\item
+  Immortal time bias is an example of looking into the future.
+\item
+  E.g. Yee \emph{et al.} reported that new statin users reported a 26\%
+  reduction in the risk of diabetes progression with one year or more of
+  treatment relative to never-users (adjusted HR 0.74, 95\% CI: 0.56 to
+  0.97).
+
+  \begin{itemize}
+  \tightlist
+  \item
+    New users excludes those who had received a lipid lowering drug from
+    three years before to six months after cohort entry
+  \end{itemize}
+\item
+  This is a surprising finding because of confounding: people whose
+  diabetes progresses are more likely to develop cardiovascular disease,
+  an indication for statins.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    would result in HR \textgreater{} 1
+  \end{itemize}
+\item
+  Why?
+\end{itemize}
+
+\tiny
+
+\begin{itemize}
+\tightlist
+\item
+  Yee \emph{et al.} Statin use in type 2 diabetes mellitus is associated
+  with a delay in starting insulin
+  (\url{http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full})
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Immortal time bias example (cont'd)}
+\protect\hypertarget{immortal-time-bias-example-contd}{}
+
+\begin{itemize}
+\tightlist
+\item
+  Why?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    all person days between cohort entry and end of follow-up were
+    \textbf{classified as treated} for those who met the statin user
+    definition, regardless of the date on which they met this definition
+    and as untreated for non-users
+  \item
+    thus all persons in the \emph{treated} group are ``immortal'' from
+    time 0 until the initiation of statin treatment
+  \item
+    this period of immortality makes treatment look more effective
+  \end{itemize}
 \end{itemize}
 
 \end{frame}

@@ -133,9 +133,9 @@
 </ul>
 </div>
 </div>
-<div id="review-of-st-and-km-estimator" class="section level1">
+<div id="review-of-survival-and-hazard-functions" class="section level1">
 <h1 class="hasAnchor">
-<a href="#review-of-st-and-km-estimator" class="anchor"></a>Review of S(t) and KM estimator</h1>
+<a href="#review-of-survival-and-hazard-functions" class="anchor"></a>Review of Survival and hazard functions</h1>
 <div id="recall-leukemia-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#recall-leukemia-example" class="anchor"></a>Recall leukemia Example</h2>
@@ -160,16 +160,12 @@
 ## Results may be unexpected or may change in future versions of ggplot2.</code></pre>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
 </div>
-</div>
-<div id="the-hazard-function" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-hazard-function" class="anchor"></a>The Hazard Function</h1>
 <div id="the-hazard-function-ht" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-hazard-function-ht" class="anchor"></a>The hazard function h(t)</h2>
 <ul>
-<li><p><em>Definition</em>: (review) The <em>survival function</em> at time t, denoted <span class="math inline">\(S(t)\)</span>, is the probability of being event-free at t. Equivalently, it is the probability that the survival time is greater than t.</p></li>
-<li><p><em>Definition</em>: (review) The <em>cumulative event function</em> at time t, denoted <span class="math inline">\(F(t)\)</span>, is the probability that the event has occurred by time t, or equivalently, the probability that the survival time is less than or equal to t. <span class="math inline">\(F(t) = 1-S(t)\)</span>.</p></li>
+<li><p><em>Definition</em>: The <em>survival function</em> at time t, denoted <span class="math inline">\(S(t)\)</span>, is the probability of being event-free at t. Equivalently, it is the probability that the survival time is greater than t.</p></li>
+<li><p><em>Definition</em>: The <em>cumulative event function</em> at time t, denoted <span class="math inline">\(F(t)\)</span>, is the probability that the event has occurred by time t, or equivalently, the probability that the survival time is less than or equal to t. <span class="math inline">\(F(t) = 1-S(t)\)</span>.</p></li>
 <li>
 <p><em>Definition</em>: The <em>hazard function</em> <span class="math inline">\(h(t)\)</span> is the short-term event rate for subjects who have not yet experienced an event.</p>
 <ul>
@@ -180,10 +176,18 @@
 </li>
 </ul>
 </div>
+<div id="leukemia-dataset-st" class="section level2">
+<h2 class="hasAnchor">
+<a href="#leukemia-dataset-st" class="anchor"></a>Leukemia dataset $S(t) $</h2>
+<p>Survival function <span class="math inline">\(S(t)\)</span></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+</div>
 <div id="leukemia-dataset-ht" class="section level2">
 <h2 class="hasAnchor">
-<a href="#leukemia-dataset-ht" class="anchor"></a>Leukemia dataset h(t)</h2>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-2-1.png" width="700"><img src="session_lecture_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
+<a href="#leukemia-dataset-ht" class="anchor"></a>Leukemia dataset <span class="math inline">\(h(t)\)</span>
+</h2>
+<p>Hazard function <span class="math inline">\(h(t)\)</span></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 
 <ul>
 <li>See <a href="http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html" class="uri">http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html</a> for R + SAS instructions</li>
@@ -226,19 +230,19 @@
 <div id="the-hazard-function-ht-leukemia-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-hazard-function-ht-leukemia-dataset" class="anchor"></a>The hazard function h(t) (leukemia dataset)</h2>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre><code>## # A tibble: 2 x 2
 ##   group   haz    
 ##   &lt;fct&gt;   &lt;list&gt; 
 ## 1 Placebo &lt;muhaz&gt;
 ## 2 6 MP    &lt;muhaz&gt;</code></pre>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
 </div>
 <div id="log-minus-log-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#log-minus-log-plot" class="anchor"></a>Log-minus-log plot</h2>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="recall-previous-regression-models" class="section level2">
 <h2 class="hasAnchor">
@@ -375,6 +379,60 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 </ul>
 </li>
 <li>Uninformative censoring</li>
+</ul>
+</div>
+<div id="what-to-do-when-proportional-hazards-doesnt-hold" class="section level2">
+<h2 class="hasAnchor">
+<a href="#what-to-do-when-proportional-hazards-doesnt-hold" class="anchor"></a>What to do when proportional hazards doesn’t hold?</h2>
+<ul>
+<li><strong>Time-dependent covariates</strong></li>
+<li>
+<strong>Definition</strong>: A time-dependent covariate is a predictor whose values may vary with time.</li>
+<li>
+<strong>Basic rule</strong>: You cannot look into the future in your analysis (even though it took place in the past) E.g.:
+<ul>
+<li>breast cancer chemotherapy patients divided into groups based on how much of the planned dose they received</li>
+<li>patients divided into groups based on early response to treatment (shrinkage of tumor, lowering of cholesterol, etc)</li>
+<li>interpolation of the values of a laboratory test linearly between observation times</li>
+<li>removing subjects who do not finish the treatment plan</li>
+<li>imputing the date of an adverse event as midway between observation times</li>
+</ul>
+</li>
+</ul>
+<p>Source: <a href="https://cran.r-project.org/web/packages/survival/vignettes/timedep.pdf">Using Time Dependent Covariates and Time Dependent Coefficients in the Cox Model</a></p>
+</div>
+<div id="immortal-time-bias-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#immortal-time-bias-example" class="anchor"></a>Immortal time bias example</h2>
+<ul>
+<li>Immortal time bias is an example of looking into the future.</li>
+<li>E.g. Yee <em>et al.</em> reported that new statin users reported a 26% reduction in the risk of diabetes progression with one year or more of treatment relative to never-users (adjusted HR 0.74, 95% CI: 0.56 to 0.97).
+<ul>
+<li>New users excludes those who had received a lipid lowering drug from three years before to six months after cohort entry</li>
+</ul>
+</li>
+<li>This is a surprising finding because of confounding: people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.
+<ul>
+<li>would result in HR &gt; 1</li>
+</ul>
+</li>
+<li>Why?</li>
+</ul>
+<ul>
+<li>Yee <em>et al.</em> Statin use in type 2 diabetes mellitus is associated with a delay in starting insulin (<a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full" class="uri">http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full</a>)</li>
+</ul>
+</div>
+<div id="immortal-time-bias-example-contd" class="section level2">
+<h2 class="hasAnchor">
+<a href="#immortal-time-bias-example-contd" class="anchor"></a>Immortal time bias example (cont’d)</h2>
+<ul>
+<li>Why?
+<ul>
+<li>all person days between cohort entry and end of follow-up were <strong>classified as treated</strong> for those who met the statin user definition, regardless of the date on which they met this definition and as untreated for non-users</li>
+<li>thus all persons in the <em>treated</em> group are “immortal” from time 0 until the initiation of statin treatment</li>
+<li>this period of immortality makes treatment look more effective</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
