@@ -130,7 +130,7 @@ legend(
 
 ## A nice proportional hazards dataset
 
-![Vittinghoff Figure 6.3, p. 210](vittinghofffig63.png)
+![Vittinghoff Figure 6.3, p. 210](figures/vittinghofffig63.png)
 
 ## The hazard function h(t) (leukemia dataset)
 
@@ -253,18 +253,18 @@ summary(coxfit)
 
 ## What are "parametric" models?
 
-* Alternative parametric approaches model the baseline hazard with a small number of additional _parameters_ estimated along with coefficients, e.g.:
-    + exponential: hazard function is contant over time, survival function is exponential
-    + Weibull: hazard function is polynomial
+* "Parametric" models estimate additional _parameters_ for the baseline hazard, e.g.:
+    + **Weibull**: hazard function is a polynomial
+    + **exponential**: hazard function is constant over time, survival function is exponential (special case of Weibull): e.g. healthy population with randomly occuring events
     + many other options for assumption of distributions
-* 
+* Can be more powerful if assumption is correct
+* Allows smooth estimation of baseline hazard, extrapolation
+* Still a proportional hazards model
+* Fit the same way but using `survival::survreg`
 
+# Summary: proportional hazards assumption
 
-
-# Summary: assumptions of Cox PH model
-
-* Constant hazard ratio over time (proportional hazards)
+* Constant hazard _ratio_ between groups over time (proportional hazards)
 * A linear association between the natural log of the relative hazard and the predictors (log-linearity)
     + A multiplicative relationship between the predictors and the hazard
 * Uninformative censoring
-

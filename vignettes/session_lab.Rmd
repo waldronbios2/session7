@@ -24,6 +24,42 @@ always_allow_html: true
 
 
 ```{r}
-leuk <- readr::read_csv("leuk.csv")
+leuk <- readr::read_csv("leuk.csv") %>%
+  mutate(group = factor(group, levels = c("Placebo", "6 MP")))
+```
+
+```{r}
+kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
+survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
+```
+
+```{r}
+weibullfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "weibull")
+expfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "exponential")
+gaussianfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "gaussian")
+```
+
+# Drawing a DAG in dagitty.net and R
+
+```{r}
+library(dagitty)
+g <- dagitty('
+dag {
+bb="-2,-3,3,3"
+collider [pos="0,1"]
+confounder [pos="0,-1"]
+exposure [exposure,pos="-1,0"]
+mediator [pos="0,0"]
+outcome [outcome,pos="1,0"]
+confounder -> exposure
+confounder -> outcome
+confounder -> mediator
+exposure -> collider
+exposure -> mediator
+mediator -> outcome
+outcome -> collider
+}
+')
+plot(g)
 ```
 

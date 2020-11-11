@@ -2,7 +2,7 @@
 [![Actions Status](https://github.com/waldronbios2/session7/workflows/build/badge.svg)](https://github.com/waldronbios2/templatesession/actions)
 <!-- badges: end -->
 
-# Session N: title
+# Session N: Survival analysis part 2 - proportional hazards
 
 ## Lecture
 
