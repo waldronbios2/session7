@@ -91,19 +91,54 @@
   <div class="contents col-md-9">
 
 
-<div id="session-n-survival-analysis-part-2---proportional-hazards" class="section level1">
+<div id="session-7-proportional-hazards-and-aft-models" class="section level1">
 
 <div id="lecture" class="section level2">
 <h2 class="hasAnchor">
 <a href="#lecture" class="anchor"></a>Lecture</h2>
-<p><strong>Learning Objectives</strong></p>
+<p><strong>Learning objectives</strong></p>
+<ol>
+<li>Define proportional hazards</li>
+<li>Perform and interpret Cox proportional hazards regression</li>
+<li>Define time-dependent covariates and their use</li>
+<li>Identify the differences between parametric and semi-parametric survival models</li>
+<li>Identify situations when a parametric survival model might be useful</li>
+</ol>
 <p><strong>Outline</strong></p>
+<ol>
+<li>Review of survival and hazard functions</li>
+<li>The Cox proportional hazards model
+<ul>
+<li>interpretation and inference</li>
+<li>what are proportional hazards</li>
+<li>when hazards aren’t proportional</li>
+</ul>
+</li>
+<li>Parametric vs semi-parametric survival models</li>
+</ol>
+<ul>
+<li>Vittinghoff sections 6.1-6.2, 6.4</li>
+</ul>
 </div>
 <div id="lab" class="section level2">
 <h2 class="hasAnchor">
 <a href="#lab" class="anchor"></a>Lab</h2>
 <p><strong>Learning Objectives</strong></p>
+<ol>
+<li>Fit a Cox proportional hazard model</li>
+<li>Create a stratified Kaplan-Meier plot</li>
+<li>Fit exponential and Weibull accelerated failure time models</li>
+<li>Fit a model using strata and a time-dependent covariate</li>
+<li>Create a DAG using dagitty</li>
+</ol>
 <p><strong>Exercises</strong></p>
+<ol>
+<li>Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset</li>
+<li>Create a stratified Kaplan-Meier plot</li>
+<li>Fit exponential and Weibull accelerated failure time (AFT) models</li>
+<li>Fit a stratified coxph model with a time-dependent covariate using an example from ?coxph</li>
+<li>Draw a DAG starting from dagitty.net and re-create it in R</li>
+</ol>
 </div>
 </div>
 
@@ -139,7 +174,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/waldronbios2/templatesession/actions"><img src="https://github.com/waldronbios2/session7/workflows/build/badge.svg" alt="Actions Status"></a></li>
+<li><a href="https://github.com/waldronbios2/templatesession/actions"><img src="https://github.com/waldronbios2/session8/workflows/build/badge.svg" alt="Actions Status"></a></li>
 </ul>
 </div>
 </div>

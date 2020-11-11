@@ -110,6 +110,7 @@
 <ol style="list-style-type: decimal">
 <li>Define proportional hazards</li>
 <li>Perform and interpret Cox proportional hazards regression</li>
+<li>Define time-dependent covariates and their use</li>
 <li>Identify the differences between parametric and semi-parametric survival models</li>
 <li>Identify situations when a parametric survival model might be useful</li>
 </ol>
@@ -118,15 +119,15 @@
 <h2 class="hasAnchor">
 <a href="#outline" class="anchor"></a>Outline</h2>
 <ol style="list-style-type: decimal">
-<li>Review of Survival function and Kaplan-Meier estimator</li>
-<li>Hazard function</li>
-<li>Cox regression
+<li>Review of survival and hazard functions</li>
+<li>The Cox proportional hazards model
 <ul>
-<li>the Cox proportional hazards model</li>
-<li>proportional hazards</li>
-<li>interpretation and inference from the Cox model</li>
+<li>interpretation and inference</li>
+<li>what are proportional hazards</li>
+<li>when hazards aren’t proportional</li>
 </ul>
 </li>
+<li>Parametric vs semi-parametric survival models</li>
 </ol>
 <ul>
 <li>Vittinghoff sections 6.1-6.2, 6.4</li>
@@ -135,7 +136,7 @@
 </div>
 <div id="review-of-survival-and-hazard-functions" class="section level1">
 <h1 class="hasAnchor">
-<a href="#review-of-survival-and-hazard-functions" class="anchor"></a>Review of Survival and hazard functions</h1>
+<a href="#review-of-survival-and-hazard-functions" class="anchor"></a>Review of survival and hazard functions</h1>
 <div id="recall-leukemia-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#recall-leukemia-example" class="anchor"></a>Recall leukemia Example</h2>
@@ -178,7 +179,8 @@
 </div>
 <div id="leukemia-dataset-st" class="section level2">
 <h2 class="hasAnchor">
-<a href="#leukemia-dataset-st" class="anchor"></a>Leukemia dataset $S(t) $</h2>
+<a href="#leukemia-dataset-st" class="anchor"></a>Leukemia dataset <span class="math inline">\(S(t)\)</span>
+</h2>
 <p>Survival function <span class="math inline">\(S(t)\)</span></p>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
@@ -189,9 +191,7 @@
 <p>Hazard function <span class="math inline">\(h(t)\)</span></p>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 
-<ul>
-<li>See <a href="http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html" class="uri">http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html</a> for R + SAS instructions</li>
-</ul>
+<p><a href="http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html">SAS and R Source code</a></p>
 </div>
 <div id="the-hazard-ratio-hr" class="section level2">
 <h2 class="hasAnchor">

@@ -124,6 +124,8 @@ outline}\label{learning-objectives-and-outline}}
 \item
   Perform and interpret Cox proportional hazards regression
 \item
+  Define time-dependent covariates and their use
+\item
   Identify the differences between parametric and semi-parametric
   survival models
 \item
@@ -138,21 +140,21 @@ outline}\label{learning-objectives-and-outline}}
 \begin{enumerate}
 \tightlist
 \item
-  Review of Survival function and Kaplan-Meier estimator
+  Review of survival and hazard functions
 \item
-  Hazard function
-\item
-  Cox regression
+  The Cox proportional hazards model
 
   \begin{itemize}
   \tightlist
   \item
-    the Cox proportional hazards model
+    interpretation and inference
   \item
-    proportional hazards
+    what are proportional hazards
   \item
-    interpretation and inference from the Cox model
+    when hazards aren't proportional
   \end{itemize}
+\item
+  Parametric vs semi-parametric survival models
 \end{enumerate}
 
 \begin{itemize}
@@ -164,7 +166,7 @@ outline}\label{learning-objectives-and-outline}}
 \end{frame}
 
 \hypertarget{review-of-survival-and-hazard-functions}{%
-\section{Review of Survival and hazard
+\section{Review of survival and hazard
 functions}\label{review-of-survival-and-hazard-functions}}
 
 \begin{frame}{Recall leukemia Example}
@@ -240,7 +242,7 @@ function \(S(t)\).
 
 \end{frame}
 
-\begin{frame}{Leukemia dataset \$S(t) \$}
+\begin{frame}{Leukemia dataset \(S(t)\)}
 \protect\hypertarget{leukemia-dataset-st}{}
 
 Survival function \(S(t)\)
@@ -258,13 +260,8 @@ Hazard function \(h(t)\)
 
 \footnotesize
 
-\begin{itemize}
-\tightlist
-\item
-  See
-  \url{http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html}
-  for R + SAS instructions
-\end{itemize}
+\href{http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html}{SAS
+and R Source code}
 
 \end{frame}
 
