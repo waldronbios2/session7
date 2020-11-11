@@ -27,7 +27,9 @@ institute: CUNY SPH Biostatistics 2
 
 ## Learning objectives
 
-1. learning objective 1
+1. Define the hazard function and proportional hazards
+2. Define proportional hazards
+3. Perform and interpret Cox proportional hazards regression
 
 ## Outline
 

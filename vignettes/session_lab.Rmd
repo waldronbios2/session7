@@ -16,11 +16,20 @@ always_allow_html: true
 
 **Learning objectives**
 
-1. Learning objective 1
+1. Fit a Cox proportional hazard model
+2. Create a stratified Kaplan-Meier plot
+3. Fit exponential and Weibull proportional hazard models
+4. Create a DAG using dagitty
 
 **Exercises**
 
-1. Exercise 1
+# Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset
+
+```{r, message=FALSE}
+library(survival)
+library(survminer)
+library(tidyverse)
+```
 
 
 ```{r}
@@ -28,10 +37,14 @@ leuk <- readr::read_csv("leuk.csv") %>%
   mutate(group = factor(group, levels = c("Placebo", "6 MP")))
 ```
 
+# Create a stratified Kaplan-Meier plot
+
 ```{r}
 kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
 survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
 ```
+
+# Fit exponential and Weibull proportional hazard models
 
 ```{r}
 weibullfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "weibull")
@@ -39,7 +52,7 @@ expfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "expon
 gaussianfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "gaussian")
 ```
 
-# Drawing a DAG in dagitty.net and R
+# Draw a DAG starting from dagitty.net and re-create it in R
 
 ```{r}
 library(dagitty)
