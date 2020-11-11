@@ -286,8 +286,7 @@ Source: [Using Time Dependent Covariates and Time Dependent Coefficients in the 
 * Immortal time bias is an example of looking into the future.
 * E.g. Yee *et al.* reported that new statin users reported a 26% reduction in the risk of diabetes progression with one year or more of treatment relative to never-users (adjusted HR 0.74, 95% CI: 0.56 to 0.97).
     + New users excludes those who had received a lipid lowering drug from three years before to six months after cohort entry
-* This is a surprising finding because of confounding: people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.
-    + would result in HR > 1
+* HR>1 was expected:people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.
 * This is a result of an analysis error. Why?
 
 \tiny
@@ -297,9 +296,10 @@ Source: [Using Time Dependent Covariates and Time Dependent Coefficients in the 
 ## Immortal time bias example (cont'd)
 
 * What was the analysis error?
-    + all person days between cohort entry and end of follow-up were **classified as treated** for those who met the statin user definition, regardless of the date on which they met this definition and as untreated for non-users
+    + "new statin user" group was defined based on future initiation: knowledge unknown at the time of entry into the study
+    + guaranteed no events for statin users from cohort entry to start of statin use
     + thus all persons in the *treated* group are "immortal" from time 0 until the initiation of statin treatment
-    + this period of immortality makes treatment look more effective
+    + this period of immortality made treatment look more effective
 
 
 # Parametric survival models
