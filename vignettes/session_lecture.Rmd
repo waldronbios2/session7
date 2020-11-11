@@ -43,7 +43,7 @@ institute: CUNY SPH Biostatistics 2
 
 * Vittinghoff sections 6.1-6.2, 6.4
 
-# Review of S(t) and KM estimator
+# Review of Survival and hazard functions
 
 ## Recall leukemia Example
 * Study of 6-mercaptopurine (6-MP) maintenance therapy for children in remission from acute lymphoblastic leukemia (ALL)
@@ -69,20 +69,20 @@ kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
 survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
 ``````
 
-# The Hazard Function
-
 ## The hazard function h(t)
 
-* *Definition*: (review) The *survival function* at time t, denoted $S(t)$, is the probability of being event-free at t.  Equivalently, it is the probability that the survival time is greater than t.
+* *Definition*: The *survival function* at time t, denoted $S(t)$, is the probability of being event-free at t.  Equivalently, it is the probability that the survival time is greater than t.
 
-* *Definition*: (review) The *cumulative event function* at time t, denoted $F(t)$, is the probability that the event has occurred by time t, or equivalently, the probability that the survival time is less than or equal to t. $F(t) = 1-S(t)$.
+* *Definition*:  The *cumulative event function* at time t, denoted $F(t)$, is the probability that the event has occurred by time t, or equivalently, the probability that the survival time is less than or equal to t. $F(t) = 1-S(t)$.
 
 * *Definition*: The *hazard function* $h(t)$ is the short-term event rate for subjects who have not yet experienced an event.
     + $h(t)$ is the probability of an event in the time interval $[t, t+s]$ (s is small), given that the individual has survived up to time t
 $$h(t) = \lim_{s \to 0} \frac{Pr(t \leq T < t+s | T \ge t)}{s}$$
 
 
-## Leukemia dataset h(t) 
+## Leukemia dataset $S(t) $
+
+Survival function $S(t)$
 
 ```{r, echo=FALSE}
 ## KM plot
@@ -93,6 +93,13 @@ survminer::ggsurvplot(
   xlab = "Time (weeks)",
   ylab = "Survival Probability"
 )
+```
+
+## Leukemia dataset $h(t)$
+
+Hazard function $h(t)$
+
+```{r, echo=FALSE, message=FALSE}
 ## hazard plot
 library(muhaz)
 haztreat = with(leuk[leuk$group == "6 MP",], muhaz(time, cens))
@@ -258,6 +265,40 @@ summary(coxfit)
 * A linear association between the natural log of the relative hazard and the predictors (log-linearity)
     + A multiplicative relationship between the predictors and the hazard
 * Uninformative censoring
+
+## What to do when proportional hazards doesn't hold?
+
+* **Time-dependent covariates**
+* **Definition**: A time-dependent covariate is a predictor whose values may vary with time.
+* **Basic rule**: You cannot look into the future in your analysis (even though it took place in the past) E.g.:
+    + breast cancer chemotherapy patients divided into groups based on how much of the planned dose they received
+    + patients divided into groups based on early response to treatment (shrinkage of tumor, lowering of cholesterol, etc)
+    + interpolation of the values of a laboratory test linearly between observation times
+    + removing subjects who do not finish the treatment plan
+    + imputing the date of an adverse event as midway between observation times
+
+Source: [Using Time Dependent Covariates and Time Dependent Coefficients in the Cox Model](https://cran.r-project.org/web/packages/survival/vignettes/timedep.pdf)
+
+## Immortal time bias example
+
+* Immortal time bias is an example of looking into the future.
+* E.g. Yee *et al.* reported that new statin users reported a 26% reduction in the risk of diabetes progression with one year or more of treatment relative to never-users (adjusted HR 0.74, 95% CI: 0.56 to 0.97).
+    + New users excludes those who had received a lipid lowering drug from three years before to six months after cohort entry
+* This is a surprising finding because of confounding: people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.
+    + would result in HR > 1
+* Why?
+
+\tiny
+
+* Yee *et al.* Statin use in type 2 diabetes mellitus is associated with a delay in starting insulin (http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full)
+
+## Immortal time bias example (cont'd)
+
+* Why?
+    + all person days between cohort entry and end of follow-up were **classified as treated** for those who met the statin user definition, regardless of the date on which they met this definition and as untreated for non-users
+    + thus all persons in the *treated* group are "immortal" from time 0 until the initiation of statin treatment
+    + this period of immortality makes treatment look more effective
+
 
 # Parametric survival models
 

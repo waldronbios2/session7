@@ -64,7 +64,25 @@ library(stargazer)
 stargazer(coxfit, expfit, weibullfit, type = "html")
 ```
 
-Note, I don't think it is valid to compare likelihoods between Cox and AFT models.
+Note, don't compare likelihoods between Cox and AFT models.
+
+# Fit a stratified coxph model with a time-dependent covariate using an example from `?coxph`
+
+Create a simple test data set:
+
+```{r}
+test1 <- data.frame(time=c(4,3,1,1,2,2,3), 
+              status=c(1,1,1,0,1,1,0), 
+              x=c(0,2,1,1,1,0,0), 
+              sex=c(0,0,0,0,1,1,1)) 
+test1
+```
+
+Fit a model stratified by `sex`, with the time-dependent covariate `x`:
+
+```{r}
+coxph(Surv(time, status) ~ x + strata(sex), test1) 
+```
 
 # Draw a DAG starting from dagitty.net and re-create it in R
 
