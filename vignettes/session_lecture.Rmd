@@ -3,19 +3,19 @@ title: 'Session 7: Survival Analysis 2'
 author: "Levi Waldron"
 clean: false
 output:
-  pdf_document:
-    toc: yes
-  html_document:
-    df_print: paged
-    number_sections: yes
-    theme: lumen
-    toc: yes
   beamer_presentation:
     colortheme: dove
     df_print: paged
     fonttheme: structurebold
     slide_level: 2
     theme: Hannover
+  html_document:
+    df_print: paged
+    number_sections: yes
+    theme: lumen
+    toc: yes
+  pdf_document:
+    toc: yes
   slidy_presentation: default
   md_document:
     preserve_yaml: false
@@ -27,9 +27,10 @@ institute: CUNY SPH Biostatistics 2
 
 ## Learning objectives
 
-1. Define the hazard function and proportional hazards
-2. Define proportional hazards
-3. Perform and interpret Cox proportional hazards regression
+1. Define proportional hazards
+2. Perform and interpret Cox proportional hazards regression
+3. Identify the differences between parametric and semi-parametric survival models
+4. Identify situations when a parametric survival model might be useful
 
 ## Outline
 
@@ -244,29 +245,51 @@ coxfit <- coxph(Surv(time, cens) ~ group, data = leuk)
 summary(coxfit)
 ```
 
-## Semi-parametric model
+## Cox PH is a semi-parametric model
 
 * Cox proportional hazards model is _semi-parametric_:
     + assumes proportional hazards (PH), but no assumption on $h_0(t)$
     + robust if PH assumption is not violated
     + time-dependent covariates may resolve apparent violations of the PH assumption.
 
-# Parametric models
-
-## What are "parametric" models?
-
-* "Parametric" models estimate additional _parameters_ for the baseline hazard, e.g.:
-    + **Weibull**: hazard function is a polynomial
-    + **exponential**: hazard function is constant over time, survival function is exponential (special case of Weibull): e.g. healthy population with randomly occuring events
-    + many other options for assumption of distributions
-* Can be more powerful if assumption is correct
-* Allows smooth estimation of baseline hazard, extrapolation
-* Still a proportional hazards model
-* Fit the same way but using `survival::survreg`
-
-# Summary: proportional hazards assumption
+## Summary: proportional hazards assumption
 
 * Constant hazard _ratio_ between groups over time (proportional hazards)
 * A linear association between the natural log of the relative hazard and the predictors (log-linearity)
     + A multiplicative relationship between the predictors and the hazard
 * Uninformative censoring
+
+# Parametric survival models
+
+## What are "parametric" survival models?
+
+* "Parametric" models estimate additional _parameters_ for the baseline hazard, e.g.:
+    + **Weibull**: hazard function is a polynomial
+    + **exponential**: hazard function is constant over time, survival function is exponential (special case of Weibull): e.g. healthy population with randomly occurring events
+    + many other options for assumption of distributions
+* In most common implementation a log-transform of the time variable is used
+    + then can be interpreted as *Accelerated Failure Time* (AFT) models.
+
+## Coefficients in parametric models
+
+* The interpretation of $\beta$ coefficients is different:
+    + Cox model: $log(HR)$
+    + AFT models: $log(survival time ratio)$
+    + The sign is *opposite* (_i.e._ if one is positive the other is negative)
+
+## Why use a parametric survival model?
+
+* Can be more powerful if assumption is correct
+    + may help with small numbers of events
+* Extra capabilities:
+    + smooth estimation of baseline hazard
+    + extrapolation
+    + complicated censoring
+* Easy to interpret: coefficients are $log(survival time ratio)$
+* Easy to fit: replace `survival::coxph` with `survival::survreg`
+
+## Why not to use a parametric survival model?
+
+* Depend on correct specification of baseline hazard model
+* Even if correctly specified, may not provide much improvement in efficiency
+* Still make a proportionality assumption, on survival functions

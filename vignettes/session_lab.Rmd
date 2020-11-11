@@ -18,7 +18,7 @@ always_allow_html: true
 
 1. Fit a Cox proportional hazard model
 2. Create a stratified Kaplan-Meier plot
-3. Fit exponential and Weibull proportional hazard models
+3. Fit exponential and Weibull accelerated failure time models
 4. Create a DAG using dagitty
 
 **Exercises**
@@ -44,13 +44,27 @@ kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
 survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
 ```
 
-# Fit exponential and Weibull proportional hazard models
+# Fit exponential and Weibull accelerated failure time (AFT) models
 
 ```{r}
-weibullfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "weibull")
-expfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "exponential")
-gaussianfit <- survival::survreg(Surv(time, cens) ~ group, data = leuk, dist = "gaussian")
+coxfit <- coxph(Surv(time, cens) ~ group, data = leuk)
+expfit <- survreg(Surv(time, cens) ~ group, data = leuk, dist = "exponential")
+weibullfit <- survreg(Surv(time, cens) ~ group, data = leuk, dist = "weibull")
 ```
+
+ 
+```{r, results='hide'}
+summary(coxfit)
+summary(expfit)
+summary(weibullfit)
+```
+
+```{r, results='asis', message=FALSE}
+library(stargazer)
+stargazer(coxfit, expfit, weibullfit, type = "html")
+```
+
+Note, I don't think it is valid to compare likelihoods between Cox and AFT models.
 
 # Draw a DAG starting from dagitty.net and re-create it in R
 
