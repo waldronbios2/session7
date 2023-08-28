@@ -25,6 +25,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,14 +39,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">session7</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lecture and Lab
      
     <span class="caret"></span>
@@ -57,23 +59,23 @@
       <a href="../articles/session_lecture.pdf">Lecture notes PDF</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/session_lab.html">Lab materials</a>
     </li>
   </ul>
 </li>
-<li class="dropdown-header">
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/waldronbios2/session7/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/waldronbios2/session7/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/leviwaldron1">
-    <span class="fab fa fab fa-twitter fa-lg"></span>
+  <a href="https://twitter.com/leviwaldron1" class="external-link">
+    <span class="fab fa-twitter fa-lg"></span>
      
   </a>
 </li>
@@ -87,14 +89,16 @@
 
       
 
-      </header><script src="session_lab_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Session 7 lab exercise: Cox proportional Hazards</h1>
-                        <h4 class="author">Levi Waldron</h4>
+      <h1 data-toc-skip>Session 7 lab exercise: Cox proportional
+Hazards</h1>
+                        <h4 data-toc-skip class="author">Levi
+Waldron</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/waldronbios2/session7/blob/master/vignettes/session_lab.Rmd"><code>vignettes/session_lab.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/waldronbios2/session7/blob/HEAD/vignettes/session_lab.Rmd" class="external-link"><code>vignettes/session_lab.Rmd</code></a></small>
       <div class="hidden name"><code>session_lab.Rmd</code></div>
 
     </div>
@@ -111,55 +115,59 @@
 </ol>
 <p><strong>Exercises</strong></p>
 <ol style="list-style-type: decimal">
-<li>Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset</li>
+<li>Fit a Cox proportional hazard model to the Leukemia 6 MP clinical
+trial dataset</li>
 <li>Create a stratified Kaplan-Meier plot</li>
-<li>Fit exponential and Weibull accelerated failure time (AFT) models</li>
-<li>Fit a stratified coxph model with a time-dependent covariate using an example from ?coxph</li>
+<li>Fit exponential and Weibull accelerated failure time (AFT)
+models</li>
+<li>Fit a stratified coxph model with a time-dependent covariate using
+an example from ?coxph</li>
 <li>Draw a DAG starting from dagitty.net and re-create it in R</li>
 </ol>
-<div id="fit-a-cox-proportional-hazard-model-to-the-leukemia-6-mp-clinical-trial-dataset" class="section level1">
-<h1 class="hasAnchor">
-<a href="#fit-a-cox-proportional-hazard-model-to-the-leukemia-6-mp-clinical-trial-dataset" class="anchor"></a>Fit a Cox proportional hazard model to the Leukemia 6 MP clinical trial dataset</h1>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/rpkgs/survminer/">survminer</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">leuk</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"leuk.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">mutate</span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">group</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"6 MP"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   time = col_double(),
-##   cens = col_double(),
-##   group = col_character()
-## )</code></pre>
+<div class="section level2">
+<h2 id="fit-a-cox-proportional-hazard-model-to-the-leukemia-6-mp-clinical-trial-dataset">Fit a Cox proportional hazard model to the Leukemia 6 MP clinical
+trial dataset<a class="anchor" aria-label="anchor" href="#fit-a-cox-proportional-hazard-model-to-the-leukemia-6-mp-clinical-trial-dataset"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html" class="external-link">survminer</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">leuk</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"leuk.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"6 MP"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">42</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">3</span></span></span>
+<span><span class="co">## <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">## <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">## <span style="color: #BB0000;">chr</span> (1): group</span></span>
+<span><span class="co">## <span style="color: #00BB00;">dbl</span> (2): time, cens</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre>
 </div>
-<div id="create-a-stratified-kaplan-meier-plot" class="section level1">
-<h1 class="hasAnchor">
-<a href="#create-a-stratified-kaplan-meier-plot" class="anchor"></a>Create a stratified Kaplan-Meier plot</h1>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">kmfit</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span><span class="op">)</span>
-<span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span><span class="op">(</span><span class="va">kmfit</span>, risk.table <span class="op">=</span> <span class="cn">TRUE</span>, linetype<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></pre></div>
-<pre><code>## Warning: Vectorized input to `element_text()` is not officially supported.
-## Results may be unexpected or may change in future versions of ggplot2.</code></pre>
+<div class="section level2">
+<h2 id="create-a-stratified-kaplan-meier-plot">Create a stratified Kaplan-Meier plot<a class="anchor" aria-label="anchor" href="#create-a-stratified-kaplan-meier-plot"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kmfit</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span><span class="op">)</span></span>
+<span><span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html" class="external-link">ggsurvplot</a></span><span class="op">(</span><span class="va">kmfit</span>, risk.table <span class="op">=</span> <span class="cn">TRUE</span>, linetype<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
-<div id="fit-exponential-and-weibull-accelerated-failure-time-aft-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#fit-exponential-and-weibull-accelerated-failure-time-aft-models" class="anchor"></a>Fit exponential and Weibull accelerated failure time (AFT) models</h1>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">coxfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span><span class="op">)</span>
-<span class="va">expfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span>, dist <span class="op">=</span> <span class="st">"exponential"</span><span class="op">)</span>
-<span class="va">weibullfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span>, dist <span class="op">=</span> <span class="st">"weibull"</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">coxfit</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">expfit</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">weibullfit</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">stargazer</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/stargazer/man/stargazer.html">stargazer</a></span><span class="op">(</span><span class="va">coxfit</span>, <span class="va">expfit</span>, <span class="va">weibullfit</span>, type <span class="op">=</span> <span class="st">"html"</span><span class="op">)</span></pre></div>
-<table class="table">
+<div class="section level2">
+<h2 id="fit-exponential-and-weibull-accelerated-failure-time-aft-models">Fit exponential and Weibull accelerated failure time (AFT)
+models<a class="anchor" aria-label="anchor" href="#fit-exponential-and-weibull-accelerated-failure-time-aft-models"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">coxfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span><span class="op">)</span></span>
+<span><span class="va">expfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html" class="external-link">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span>, dist <span class="op">=</span> <span class="st">"exponential"</span><span class="op">)</span></span>
+<span><span class="va">weibullfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html" class="external-link">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">leuk</span>, dist <span class="op">=</span> <span class="st">"weibull"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">coxfit</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">expfit</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">weibullfit</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">stargazer</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/stargazer/man/stargazer.html" class="external-link">stargazer</a></span><span class="op">(</span><span class="va">coxfit</span>, <span class="va">expfit</span>, <span class="va">weibullfit</span>, type <span class="op">=</span> <span class="st">"html"</span><span class="op">)</span></span></code></pre></div>
+<table style="text-align:center" class="table">
 <tr>
 <td colspan="4" style="border-bottom: 1px solid black">
 </td>
@@ -413,66 +421,68 @@ Score (Logrank) Test
 <em>Note:</em>
 </td>
 <td colspan="3" style="text-align:right">
-<sup><em></em></sup>p&lt;0.1; <sup><strong></strong></sup>p&lt;0.05; <sup></sup>p&lt;0.01
+<sup><em></em></sup>p&lt;0.1; <sup><strong></strong></sup>p&lt;0.05;
+<sup></sup>p&lt;0.01
 </td>
 </tr>
 </table>
 <p>Note, don’t compare likelihoods between Cox and AFT models.</p>
 </div>
-<div id="fit-a-stratified-coxph-model-with-a-time-dependent-covariate-using-an-example-from-coxph" class="section level1">
-<h1 class="hasAnchor">
-<a href="#fit-a-stratified-coxph-model-with-a-time-dependent-covariate-using-an-example-from-coxph" class="anchor"></a>Fit a stratified coxph model with a time-dependent covariate using an example from <code>?coxph</code>
-</h1>
+<div class="section level2">
+<h2 id="fit-a-stratified-coxph-model-with-a-time-dependent-covariate-using-an-example-from-coxph">Fit a stratified coxph model with a time-dependent covariate using
+an example from <code>?coxph</code><a class="anchor" aria-label="anchor" href="#fit-a-stratified-coxph-model-with-a-time-dependent-covariate-using-an-example-from-coxph"></a>
+</h2>
 <p>Create a simple test data set:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">test1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>time<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, 
-              status<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, 
-              x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>, 
-              sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> 
-<span class="va">test1</span></pre></div>
-<pre><code>##   time status x sex
-## 1    4      1 0   0
-## 2    3      1 2   0
-## 3    1      1 1   0
-## 4    1      0 1   0
-## 5    2      1 1   1
-## 6    2      1 0   1
-## 7    3      0 0   1</code></pre>
-<p>Fit a model stratified by <code>sex</code>, with the time-dependent covariate <code>x</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html">strata</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span>, <span class="va">test1</span><span class="op">)</span> </pre></div>
-<pre><code>## Call:
-## coxph(formula = Surv(time, status) ~ x + strata(sex), data = test1)
-## 
-##     coef exp(coef) se(coef)     z     p
-## x 0.8023    2.2307   0.8224 0.976 0.329
-## 
-## Likelihood ratio test=1.09  on 1 df, p=0.2971
-## n= 7, number of events= 5</code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>time<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, </span>
+<span>              status<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, </span>
+<span>              x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>, </span>
+<span>              sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">test1</span></span></code></pre></div>
+<pre><code><span><span class="co">##   time status x sex</span></span>
+<span><span class="co">## 1    4      1 0   0</span></span>
+<span><span class="co">## 2    3      1 2   0</span></span>
+<span><span class="co">## 3    1      1 1   0</span></span>
+<span><span class="co">## 4    1      0 1   0</span></span>
+<span><span class="co">## 5    2      1 1   1</span></span>
+<span><span class="co">## 6    2      1 0   1</span></span>
+<span><span class="co">## 7    3      0 0   1</span></span></code></pre>
+<p>Fit a model stratified by <code>sex</code>, with the time-dependent
+covariate <code>x</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html" class="external-link">strata</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span>, <span class="va">test1</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="co">## Call:</span></span>
+<span><span class="co">## coxph(formula = Surv(time, status) ~ x + strata(sex), data = test1)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     coef exp(coef) se(coef)     z     p</span></span>
+<span><span class="co">## x 0.8023    2.2307   0.8224 0.976 0.329</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Likelihood ratio test=1.09  on 1 df, p=0.2971</span></span>
+<span><span class="co">## n= 7, number of events= 5</span></span></code></pre>
 </div>
-<div id="draw-a-dag-starting-from-dagitty-net-and-re-create-it-in-r" class="section level1">
-<h1 class="hasAnchor">
-<a href="#draw-a-dag-starting-from-dagitty-net-and-re-create-it-in-r" class="anchor"></a>Draw a DAG starting from dagitty.net and re-create it in R</h1>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.dagitty.net">dagitty</a></span><span class="op">)</span>
-<span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html">dagitty</a></span><span class="op">(</span><span class="st">'
-dag {
-bb="-2,-3,3,3"
-collider [pos="0,1"]
-confounder [pos="0,-1"]
-exposure [exposure,pos="-1,0"]
-mediator [pos="0,0"]
-outcome [outcome,pos="1,0"]
-confounder -&gt; exposure
-confounder -&gt; outcome
-confounder -&gt; mediator
-exposure -&gt; collider
-exposure -&gt; mediator
-mediator -&gt; outcome
-outcome -&gt; collider
-}
-'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></pre></div>
+<div class="section level2">
+<h2 id="draw-a-dag-starting-from-dagitty-net-and-re-create-it-in-r">Draw a DAG starting from dagitty.net and re-create it in R<a class="anchor" aria-label="anchor" href="#draw-a-dag-starting-from-dagitty-net-and-re-create-it-in-r"></a>
+</h2>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.dagitty.net" class="external-link">dagitty</a></span><span class="op">)</span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html" class="external-link">dagitty</a></span><span class="op">(</span><span class="st">'</span></span>
+<span><span class="st">dag {</span></span>
+<span><span class="st">bb="-2,-3,3,3"</span></span>
+<span><span class="st">collider [pos="0,1"]</span></span>
+<span><span class="st">confounder [pos="0,-1"]</span></span>
+<span><span class="st">exposure [exposure,pos="-1,0"]</span></span>
+<span><span class="st">mediator [pos="0,0"]</span></span>
+<span><span class="st">outcome [outcome,pos="1,0"]</span></span>
+<span><span class="st">confounder -&gt; exposure</span></span>
+<span><span class="st">confounder -&gt; outcome</span></span>
+<span><span class="st">confounder -&gt; mediator</span></span>
+<span><span class="st">exposure -&gt; collider</span></span>
+<span><span class="st">exposure -&gt; mediator</span></span>
+<span><span class="st">mediator -&gt; outcome</span></span>
+<span><span class="st">outcome -&gt; collider</span></span>
+<span><span class="st">}</span></span>
+<span><span class="st">'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
 <p><img src="session_lab_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
   </div>
@@ -488,11 +498,13 @@ outcome -&gt; collider
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://waldronlab.io">Levi Waldron</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://waldronlab.io" class="external-link">Levi Waldron</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -500,6 +512,8 @@ outcome -&gt; collider
 
   
 
+
+  
 
   </body>
 </html>

@@ -25,6 +25,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,14 +39,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">session7</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lecture and Lab
      
     <span class="caret"></span>
@@ -57,23 +59,23 @@
       <a href="../articles/session_lecture.pdf">Lecture notes PDF</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/session_lab.html">Lab materials</a>
     </li>
   </ul>
 </li>
-<li class="dropdown-header">
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/waldronbios2/session7/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/waldronbios2/session7/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/leviwaldron1">
-    <span class="fab fa fab fa-twitter fa-lg"></span>
+  <a href="https://twitter.com/leviwaldron1" class="external-link">
+    <span class="fab fa-twitter fa-lg"></span>
      
   </a>
 </li>
@@ -87,37 +89,40 @@
 
       
 
-      </header><script src="session_lecture_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Session 7: Survival Analysis 2</h1>
-                        <h4 class="author">Levi Waldron</h4>
+                        <h4 data-toc-skip class="author">Levi
+Waldron</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/waldronbios2/session7/blob/master/vignettes/session_lecture.Rmd"><code>vignettes/session_lecture.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/waldronbios2/session7/blob/HEAD/vignettes/session_lecture.Rmd" class="external-link"><code>vignettes/session_lecture.Rmd</code></a></small>
       <div class="hidden name"><code>session_lecture.Rmd</code></div>
 
     </div>
 
     
     
-<div id="learning-objectives-and-outline" class="section level1">
-<h1 class="hasAnchor">
-<a href="#learning-objectives-and-outline" class="anchor"></a>Learning objectives and outline</h1>
-<div id="learning-objectives" class="section level2">
-<h2 class="hasAnchor">
-<a href="#learning-objectives" class="anchor"></a>Learning objectives</h2>
+<div class="section level2">
+<h2 id="learning-objectives-and-outline">Learning objectives and outline<a class="anchor" aria-label="anchor" href="#learning-objectives-and-outline"></a>
+</h2>
+<div class="section level3">
+<h3 id="learning-objectives">Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>Define proportional hazards</li>
 <li>Perform and interpret Cox proportional hazards regression</li>
 <li>Define time-dependent covariates and their use</li>
-<li>Identify the differences between parametric and semi-parametric survival models</li>
-<li>Identify situations when a parametric survival model might be useful</li>
+<li>Identify the differences between parametric and semi-parametric
+survival models</li>
+<li>Identify situations when a parametric survival model might be
+useful</li>
 </ol>
 </div>
-<div id="outline" class="section level2">
-<h2 class="hasAnchor">
-<a href="#outline" class="anchor"></a>Outline</h2>
+<div class="section level3">
+<h3 id="outline">Outline<a class="anchor" aria-label="anchor" href="#outline"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>Review of survival and hazard functions</li>
 <li>The Cox proportional hazards model
@@ -134,197 +139,233 @@
 </ul>
 </div>
 </div>
-<div id="review-of-survival-and-hazard-functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#review-of-survival-and-hazard-functions" class="anchor"></a>Review of survival and hazard functions</h1>
-<div id="recall-leukemia-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#recall-leukemia-example" class="anchor"></a>Recall leukemia Example</h2>
+<div class="section level2">
+<h2 id="review-of-survival-and-hazard-functions">Review of survival and hazard functions<a class="anchor" aria-label="anchor" href="#review-of-survival-and-hazard-functions"></a>
+</h2>
+<div class="section level3">
+<h3 id="recall-leukemia-example">Recall leukemia Example<a class="anchor" aria-label="anchor" href="#recall-leukemia-example"></a>
+</h3>
 <ul>
-<li>Study of 6-mercaptopurine (6-MP) maintenance therapy for children in remission from acute lymphoblastic leukemia (ALL)</li>
-<li>42 patients achieved remission from induction therapy and were then randomized in equal numbers to 6-MP or placebo.</li>
+<li>Study of 6-mercaptopurine (6-MP) maintenance therapy for children in
+remission from acute lymphoblastic leukemia (ALL)</li>
+<li>42 patients achieved remission from induction therapy and were then
+randomized in equal numbers to 6-MP or placebo.</li>
 <li>Survival time studied was from randomization until relapse.</li>
 </ul>
 </div>
-<div id="leukemia-follow-up-table" class="section level2">
-<h2 class="hasAnchor">
-<a href="#leukemia-follow-up-table" class="anchor"></a>Leukemia follow-up table</h2>
-<div class="figure">
-<img src="figures/leukemiatable.png" alt=""><p class="caption">leukemia Follow-up Table</p>
+<div class="section level3">
+<h3 id="leukemia-follow-up-table">Leukemia follow-up table<a class="anchor" aria-label="anchor" href="#leukemia-follow-up-table"></a>
+</h3>
+<div class="float">
+<img src="figures/leukemiatable.png" alt="leukemia Follow-up Table"><div class="figcaption">leukemia Follow-up Table</div>
 </div>
 <p>This is the <strong>Kaplan-Meier Estimate</strong> <span class="math inline">\(\hat S(t)\)</span> of the Survival function <span class="math inline">\(S(t)\)</span>.</p>
 </div>
-<div id="leukemia-kaplan-meier-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#leukemia-kaplan-meier-plot" class="anchor"></a>Leukemia Kaplan-Meier plot</h2>
-<pre><code>## Warning: Vectorized input to `element_text()` is not officially supported.
-## Results may be unexpected or may change in future versions of ggplot2.</code></pre>
+<div class="section level3">
+<h3 id="leukemia-kaplan-meier-plot">Leukemia Kaplan-Meier plot<a class="anchor" aria-label="anchor" href="#leukemia-kaplan-meier-plot"></a>
+</h3>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
 </div>
-<div id="the-hazard-function-ht" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-hazard-function-ht" class="anchor"></a>The hazard function h(t)</h2>
+<div class="section level3">
+<h3 id="the-hazard-function-ht">The hazard function h(t)<a class="anchor" aria-label="anchor" href="#the-hazard-function-ht"></a>
+</h3>
 <ul>
-<li><p><em>Definition</em>: The <em>survival function</em> at time t, denoted <span class="math inline">\(S(t)\)</span>, is the probability of being event-free at t. Equivalently, it is the probability that the survival time is greater than t.</p></li>
-<li><p><em>Definition</em>: The <em>cumulative event function</em> at time t, denoted <span class="math inline">\(F(t)\)</span>, is the probability that the event has occurred by time t, or equivalently, the probability that the survival time is less than or equal to t. <span class="math inline">\(F(t) = 1-S(t)\)</span>.</p></li>
+<li><p><em>Definition</em>: The <em>survival function</em> at time t,
+denoted <span class="math inline">\(S(t)\)</span>, is the probability of
+being event-free at t. Equivalently, it is the probability that the
+survival time is greater than t.</p></li>
+<li><p><em>Definition</em>: The <em>cumulative event function</em> at
+time t, denoted <span class="math inline">\(F(t)\)</span>, is the
+probability that the event has occurred by time t, or equivalently, the
+probability that the survival time is less than or equal to t. <span class="math inline">\(F(t) = 1-S(t)\)</span>.</p></li>
 <li>
-<p><em>Definition</em>: The <em>hazard function</em> <span class="math inline">\(h(t)\)</span> is the short-term event rate for subjects who have not yet experienced an event.</p>
+<p><em>Definition</em>: The <em>hazard function</em> <span class="math inline">\(h(t)\)</span> is the short-term event rate for
+subjects who have not yet experienced an event.</p>
 <ul>
 <li>
-<span class="math inline">\(h(t)\)</span> is the probability of an event in the time interval <span class="math inline">\([t, t+s]\)</span> (s is small), given that the individual has survived up to time t <span class="math display">\[h(t) = \lim_{s \to 0} \frac{Pr(t \leq T &lt; t+s | T \ge t)}{s}\]</span>
+<span class="math inline">\(h(t)\)</span> is the probability of an
+event in the time interval <span class="math inline">\([t, t+s]\)</span>
+(s is small), given that the individual has survived up to time t <span class="math display">\[h(t) = \lim_{s \to 0} \frac{Pr(t \leq T &lt; t+s
+| T \ge t)}{s}\]</span>
 </li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="leukemia-dataset-st" class="section level2">
-<h2 class="hasAnchor">
-<a href="#leukemia-dataset-st" class="anchor"></a>Leukemia dataset <span class="math inline">\(S(t)\)</span>
-</h2>
+<div class="section level3">
+<h3 id="leukemia-dataset-st">Leukemia dataset <span class="math inline">\(S(t)\)</span><a class="anchor" aria-label="anchor" href="#leukemia-dataset-st"></a>
+</h3>
 <p>Survival function <span class="math inline">\(S(t)\)</span></p>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
-<div id="leukemia-dataset-ht" class="section level2">
-<h2 class="hasAnchor">
-<a href="#leukemia-dataset-ht" class="anchor"></a>Leukemia dataset <span class="math inline">\(h(t)\)</span>
-</h2>
+<div class="section level3">
+<h3 id="leukemia-dataset-ht">Leukemia dataset <span class="math inline">\(h(t)\)</span><a class="anchor" aria-label="anchor" href="#leukemia-dataset-ht"></a>
+</h3>
 <p>Hazard function <span class="math inline">\(h(t)\)</span></p>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-
-<p><a href="http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html">SAS and R Source code</a></p>
+<p><a href="http://sas-and-r.blogspot.com/2010/06/example-741-hazard-function-plotting.html" class="external-link">SAS
+and R Source code</a></p>
 </div>
-<div id="the-hazard-ratio-hr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-hazard-ratio-hr" class="anchor"></a>The Hazard Ratio (HR)</h2>
+<div class="section level3">
+<h3 id="the-hazard-ratio-hr">The Hazard Ratio (HR)<a class="anchor" aria-label="anchor" href="#the-hazard-ratio-hr"></a>
+</h3>
 <ul>
-<li>If we are comparing the hazards of a control and a treatment group, it could in general be a function of time:
+<li>If we are comparing the hazards of a control and a treatment group,
+it could in general be a function of time:
 <ul>
 <li><span class="math inline">\(HR(t) = h_T(t) / h_C(t)\)</span></li>
 </ul>
 </li>
-<li>Interpretation: the risk of event for the treatment group compared to the control group, as a function of time</li>
+<li>Interpretation: the risk of event for the treatment group compared
+to the control group, as a function of time</li>
 </ul>
 </div>
-<div id="the-proportional-hazards-assumption" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-proportional-hazards-assumption" class="anchor"></a>The Proportional Hazards Assumption</h2>
+<div class="section level3">
+<h3 id="the-proportional-hazards-assumption">The Proportional Hazards Assumption<a class="anchor" aria-label="anchor" href="#the-proportional-hazards-assumption"></a>
+</h3>
 <ul>
-<li><p><em>Definition</em>: Under the <em>proportional hazards assumption</em>, the hazard ratio does not vary with time. That is, <span class="math inline">\(HR(t) \equiv HR\)</span>.</p></li>
+<li><p><em>Definition</em>: Under the <em>proportional hazards
+assumption</em>, the hazard ratio does not vary with time. That is,
+<span class="math inline">\(HR(t) \equiv HR\)</span>.</p></li>
 <li>
-<p>In other words, <span class="math inline">\(HR\)</span> does not vary with time</p>
+<p>In other words, <span class="math inline">\(HR\)</span> does not
+vary with time</p>
 <ul>
 <li>
 <span class="math inline">\(HR(t)\)</span> is a constant, <span class="math inline">\(HR\)</span>, at <em>all times</em> t</li>
-<li>this assumption is about the population, of course there will be sampling variation</li>
+<li>this assumption is about the population, of course there will be
+sampling variation</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="a-nice-proportional-hazards-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#a-nice-proportional-hazards-dataset" class="anchor"></a>A nice proportional hazards dataset</h2>
-<div class="figure">
-<img src="figures/vittinghofffig63.png" alt=""><p class="caption">Vittinghoff Figure 6.3, p. 210</p>
+<div class="section level3">
+<h3 id="a-nice-proportional-hazards-dataset">A nice proportional hazards dataset<a class="anchor" aria-label="anchor" href="#a-nice-proportional-hazards-dataset"></a>
+</h3>
+<div class="float">
+<img src="figures/vittinghofffig63.png" alt="Vittinghoff Figure 6.3, p. 210"><div class="figcaption">Vittinghoff Figure 6.3, p. 210</div>
 </div>
 </div>
-<div id="the-hazard-function-ht-leukemia-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-hazard-function-ht-leukemia-dataset" class="anchor"></a>The hazard function h(t) (leukemia dataset)</h2>
+<div class="section level3">
+<h3 id="the-hazard-function-ht-leukemia-dataset">The hazard function h(t) (leukemia dataset)<a class="anchor" aria-label="anchor" href="#the-hazard-function-ht-leukemia-dataset"></a>
+</h3>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code>## # A tibble: 2 x 2
-##   group   haz    
-##   &lt;fct&gt;   &lt;list&gt; 
-## 1 Placebo &lt;muhaz&gt;
-## 2 6 MP    &lt;muhaz&gt;</code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
+<span><span class="co">##   group   haz    </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Placebo <span style="color: #949494;">&lt;muhaz&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 6 MP    <span style="color: #949494;">&lt;muhaz&gt;</span></span></span></code></pre>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
 </div>
-<div id="log-minus-log-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#log-minus-log-plot" class="anchor"></a>Log-minus-log plot</h2>
+<div class="section level3">
+<h3 id="log-minus-log-plot">Log-minus-log plot<a class="anchor" aria-label="anchor" href="#log-minus-log-plot"></a>
+</h3>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
-<div id="recall-previous-regression-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#recall-previous-regression-models" class="anchor"></a>Recall previous regression models</h2>
+<div class="section level3">
+<h3 id="recall-previous-regression-models">Recall previous regression models<a class="anchor" aria-label="anchor" href="#recall-previous-regression-models"></a>
+</h3>
 <p><span class="math display">\[
-E[y_i|x_i] = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
+E[y_i|x_i] = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p
+x_{pi}
 \]</span></p>
 <ul>
 <li>
-<span class="math inline">\(x_p\)</span> are the predictors or independent variables</li>
+<span class="math inline">\(x_p\)</span> are the predictors or
+independent variables</li>
 <li>
-<span class="math inline">\(y\)</span> is the outcome, response, or dependent variable</li>
+<span class="math inline">\(y\)</span> is the outcome, response, or
+dependent variable</li>
 <li>
-<span class="math inline">\(E[y|x]\)</span> is the expected value of <span class="math inline">\(y\)</span> given <span class="math inline">\(x\)</span>
+<span class="math inline">\(E[y|x]\)</span> is the expected value of
+<span class="math inline">\(y\)</span> given <span class="math inline">\(x\)</span>
 </li>
 <li>
-<span class="math inline">\(\beta_p\)</span> are the regression coefficients</li>
+<span class="math inline">\(\beta_p\)</span> are the regression
+coefficients</li>
 </ul>
 <p>For logistic regression: <span class="math display">\[
-Logit(P(x_i)) = log \left( \frac{P(x_i)}{1-P(x_i)} \right) = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
+Logit(P(x_i)) = log \left( \frac{P(x_i)}{1-P(x_i)} \right) = \beta_0 +
+\beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
 \]</span></p>
 <p>For log-linear regression: <span class="math display">\[
-log(E[y_i|x_i]) = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
+log(E[y_i|x_i]) = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... +
+\beta_p x_{pi}
 \]</span></p>
 </div>
 </div>
-<div id="cox-proportional-hazards-model" class="section level1">
-<h1 class="hasAnchor">
-<a href="#cox-proportional-hazards-model" class="anchor"></a>Cox proportional hazards model</h1>
-<div id="cox-proportional-hazards-model-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cox-proportional-hazards-model-1" class="anchor"></a>Cox proportional hazards model</h2>
+<div class="section level2">
+<h2 id="cox-proportional-hazards-model">Cox proportional hazards model<a class="anchor" aria-label="anchor" href="#cox-proportional-hazards-model"></a>
+</h2>
+<div class="section level3">
+<h3 id="cox-proportional-hazards-model-1">Cox proportional hazards model<a class="anchor" aria-label="anchor" href="#cox-proportional-hazards-model-1"></a>
+</h3>
 <ul>
-<li>Cox proportional hazards regression assesses relationship between a right-censored, time-to-event outcome and predictors:
+<li>Cox proportional hazards regression assesses relationship between a
+right-censored, time-to-event outcome and predictors:
 <ul>
 <li>categorical variables (e.g., treatment groups)</li>
 <li>continuous variables <span class="math display">\[
-log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
+log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} +
+\beta_2 x_{2i} + ... + \beta_p x_{pi}
 \]</span>
 </li>
 </ul>
 </li>
 <li>
-<span class="math inline">\(HR(x_i)\)</span> is the hazard of patient <span class="math inline">\(i\)</span> relative to baseline</li>
+<span class="math inline">\(HR(x_i)\)</span> is the hazard of
+patient <span class="math inline">\(i\)</span> relative to baseline</li>
 <li>
-<span class="math inline">\(h(t|x_i)\)</span> is the time-dependent hazard function <span class="math inline">\(h(t)\)</span> for patient <span class="math inline">\(i\)</span>
+<span class="math inline">\(h(t|x_i)\)</span> is the time-dependent
+hazard function <span class="math inline">\(h(t)\)</span> for patient
+<span class="math inline">\(i\)</span>
 </li>
 <li>
-<span class="math inline">\(h_0(t)\)</span> is the <em>baseline hazard function</em>
+<span class="math inline">\(h_0(t)\)</span> is the <em>baseline
+hazard function</em>
 </li>
 </ul>
 <p>Multiplicative or additive model?</p>
 </div>
-<div id="interpretation-of-coefficients" class="section level2">
-<h2 class="hasAnchor">
-<a href="#interpretation-of-coefficients" class="anchor"></a>Interpretation of coefficients</h2>
+<div class="section level3">
+<h3 id="interpretation-of-coefficients">Interpretation of coefficients<a class="anchor" aria-label="anchor" href="#interpretation-of-coefficients"></a>
+</h3>
 <ul>
-<li>Coefficients <span class="math inline">\(\beta\)</span> for a categorical / binary predictor:
-<ul>
-<li>
-<span class="math inline">\(\beta\)</span> is the <span class="math inline">\(log\)</span> of the ratio of hazards for the comparison group relative to reference group (<span class="math inline">\(log(HR)\)</span>)</li>
-</ul>
-</li>
-<li>Coefficients <span class="math inline">\(\beta\)</span> for a continuous predictor:
+<li>Coefficients <span class="math inline">\(\beta\)</span> for a
+categorical / binary predictor:
 <ul>
 <li>
-<span class="math inline">\(\beta\)</span> is the <span class="math inline">\(log\)</span> of the ratio of hazards for someone having a one unit higher value of <span class="math inline">\(x\)</span> (1 year, 1mm Hg, etc)</li>
+<span class="math inline">\(\beta\)</span> is the <span class="math inline">\(log\)</span> of the ratio of hazards for the
+comparison group relative to reference group (<span class="math inline">\(log(HR)\)</span>)</li>
 </ul>
 </li>
-<li>If the hazard ratio (<span class="math inline">\(exp(\beta)\)</span>) is close to 1 then the predictor does not affect survival</li>
-<li>If the hazard ratio is less than 1 then the predictor is protective (associated with improved survival)</li>
-<li>If the hazard ratio is greater than 1 then the predictor is associated with increased risk (= decreased survival)</li>
+<li>Coefficients <span class="math inline">\(\beta\)</span> for a
+continuous predictor:
+<ul>
+<li>
+<span class="math inline">\(\beta\)</span> is the <span class="math inline">\(log\)</span> of the ratio of hazards for someone
+having a one unit higher value of <span class="math inline">\(x\)</span>
+(1 year, 1mm Hg, etc)</li>
+</ul>
+</li>
+<li>If the hazard ratio (<span class="math inline">\(exp(\beta)\)</span>) is close to 1 then the
+predictor does not affect survival</li>
+<li>If the hazard ratio is less than 1 then the predictor is protective
+(associated with improved survival)</li>
+<li>If the hazard ratio is greater than 1 then the predictor is
+associated with increased risk (= decreased survival)</li>
 </ul>
 </div>
-<div id="hypothesis-testing-and-cis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#hypothesis-testing-and-cis" class="anchor"></a>Hypothesis testing and CIs</h2>
+<div class="section level3">
+<h3 id="hypothesis-testing-and-cis">Hypothesis testing and CIs<a class="anchor" aria-label="anchor" href="#hypothesis-testing-and-cis"></a>
+</h3>
 <ul>
 <li>Wald Test or Likelihood Ratio Test for coefficients
 <ul>
-<li><span class="math inline">\(H_0: \beta=0, H_a: \beta \neq 0\)</span></li>
-<li>equivalent to <span class="math inline">\(H_0: HR=1, H_a: HR \neq 1\)</span>
+<li><span class="math inline">\(H_0: \beta=0, H_a: \beta \neq
+0\)</span></li>
+<li>equivalent to <span class="math inline">\(H_0: HR=1, H_a: HR \neq
+1\)</span>
 </li>
 </ul>
 </li>
@@ -332,148 +373,177 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 </li>
 </ul>
 </div>
-<div id="cox-ph-regression-for-leukemia-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cox-ph-regression-for-leukemia-dataset" class="anchor"></a>Cox PH regression for Leukemia dataset</h2>
-
-<pre><code>## Call:
-## coxph(formula = Surv(time, cens) ~ group, data = leuk)
-## 
-##   n= 42, number of events= 30 
-## 
-##              coef exp(coef) se(coef)      z Pr(&gt;|z|)    
-## group6 MP -1.5721    0.2076   0.4124 -3.812 0.000138 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-##           exp(coef) exp(-coef) lower .95 upper .95
-## group6 MP    0.2076      4.817   0.09251    0.4659
-## 
-## Concordance= 0.69  (se = 0.041 )
-## Likelihood ratio test= 16.35  on 1 df,   p=5e-05
-## Wald test            = 14.53  on 1 df,   p=1e-04
-## Score (logrank) test = 17.25  on 1 df,   p=3e-05</code></pre>
+<div class="section level3">
+<h3 id="cox-ph-regression-for-leukemia-dataset">Cox PH regression for Leukemia dataset<a class="anchor" aria-label="anchor" href="#cox-ph-regression-for-leukemia-dataset"></a>
+</h3>
+<pre><code><span><span class="co">## Call:</span></span>
+<span><span class="co">## coxph(formula = Surv(time, cens) ~ group, data = leuk)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   n= 42, number of events= 30 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##              coef exp(coef) se(coef)      z Pr(&gt;|z|)    </span></span>
+<span><span class="co">## group6 MP -1.5721    0.2076   0.4124 -3.812 0.000138 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##           exp(coef) exp(-coef) lower .95 upper .95</span></span>
+<span><span class="co">## group6 MP    0.2076      4.817   0.09251    0.4659</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Concordance= 0.69  (se = 0.041 )</span></span>
+<span><span class="co">## Likelihood ratio test= 16.35  on 1 df,   p=5e-05</span></span>
+<span><span class="co">## Wald test            = 14.53  on 1 df,   p=1e-04</span></span>
+<span><span class="co">## Score (logrank) test = 17.25  on 1 df,   p=3e-05</span></span></code></pre>
 </div>
-<div id="cox-ph-is-a-semi-parametric-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cox-ph-is-a-semi-parametric-model" class="anchor"></a>Cox PH is a semi-parametric model</h2>
+<div class="section level3">
+<h3 id="cox-ph-is-a-semi-parametric-model">Cox PH is a semi-parametric model<a class="anchor" aria-label="anchor" href="#cox-ph-is-a-semi-parametric-model"></a>
+</h3>
 <ul>
 <li>Cox proportional hazards model is <em>semi-parametric</em>:
 <ul>
 <li>assumes proportional hazards (PH), but no assumption on <span class="math inline">\(h_0(t)\)</span>
 </li>
 <li>robust if PH assumption is not violated</li>
-<li>time-dependent covariates may resolve apparent violations of the PH assumption.</li>
+<li>time-dependent covariates may resolve apparent violations of the PH
+assumption.</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="summary-proportional-hazards-assumption" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summary-proportional-hazards-assumption" class="anchor"></a>Summary: proportional hazards assumption</h2>
+<div class="section level3">
+<h3 id="summary-proportional-hazards-assumption">Summary: proportional hazards assumption<a class="anchor" aria-label="anchor" href="#summary-proportional-hazards-assumption"></a>
+</h3>
 <ul>
-<li>Constant hazard <em>ratio</em> between groups over time (proportional hazards)</li>
-<li>A linear association between the natural log of the relative hazard and the predictors (log-linearity)
+<li>Constant hazard <em>ratio</em> between groups over time
+(proportional hazards)</li>
+<li>A linear association between the natural log of the relative hazard
+and the predictors (log-linearity)
 <ul>
-<li>A multiplicative relationship between the predictors and the hazard</li>
+<li>A multiplicative relationship between the predictors and the
+hazard</li>
 </ul>
 </li>
 <li>Uninformative censoring</li>
 </ul>
 </div>
-<div id="what-to-do-when-proportional-hazards-doesnt-hold" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-to-do-when-proportional-hazards-doesnt-hold" class="anchor"></a>What to do when proportional hazards doesn’t hold?</h2>
+<div class="section level3">
+<h3 id="what-to-do-when-proportional-hazards-doesnt-hold">What to do when proportional hazards doesn’t hold?<a class="anchor" aria-label="anchor" href="#what-to-do-when-proportional-hazards-doesnt-hold"></a>
+</h3>
 <ul>
 <li><strong>Time-dependent covariates</strong></li>
 <li>
-<strong>Definition</strong>: A time-dependent covariate is a predictor whose values may vary with time.</li>
+<strong>Definition</strong>: A time-dependent covariate is a
+predictor whose values may vary with time.</li>
 <li>
-<strong>Basic rule</strong>: You cannot look into the future in your analysis (even though it took place in the past) E.g.:
+<strong>Basic rule</strong>: You cannot look into the future in your
+analysis (even though it took place in the past) E.g.:
 <ul>
-<li>breast cancer chemotherapy patients divided into groups based on how much of the planned dose they received</li>
-<li>patients divided into groups based on early response to treatment (shrinkage of tumor, lowering of cholesterol, etc)</li>
-<li>interpolation of the values of a laboratory test linearly between observation times</li>
+<li>breast cancer chemotherapy patients divided into groups based on how
+much of the planned dose they received</li>
+<li>patients divided into groups based on early response to treatment
+(shrinkage of tumor, lowering of cholesterol, etc)</li>
+<li>interpolation of the values of a laboratory test linearly between
+observation times</li>
 <li>removing subjects who do not finish the treatment plan</li>
-<li>imputing the date of an adverse event as midway between observation times</li>
+<li>imputing the date of an adverse event as midway between observation
+times</li>
 </ul>
 </li>
 </ul>
-<p>Source: <a href="https://cran.r-project.org/web/packages/survival/vignettes/timedep.pdf">Using Time Dependent Covariates and Time Dependent Coefficients in the Cox Model</a></p>
+<p>Source: <a href="https://cran.r-project.org/web/packages/survival/vignettes/timedep.pdf" class="external-link">Using
+Time Dependent Covariates and Time Dependent Coefficients in the Cox
+Model</a></p>
 </div>
-<div id="immortal-time-bias-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#immortal-time-bias-example" class="anchor"></a>Immortal time bias example</h2>
+<div class="section level3">
+<h3 id="immortal-time-bias-example">Immortal time bias example<a class="anchor" aria-label="anchor" href="#immortal-time-bias-example"></a>
+</h3>
 <ul>
 <li>Immortal time bias is an example of looking into the future.</li>
-<li>E.g. Yee <em>et al.</em> reported that new statin users reported a 26% reduction in the risk of diabetes progression with one year or more of treatment relative to never-users (adjusted HR 0.74, 95% CI: 0.56 to 0.97).
+<li>E.g. Yee <em>et al.</em> reported that new statin users reported a
+26% reduction in the risk of diabetes progression with one year or more
+of treatment relative to never-users (adjusted HR 0.74, 95% CI: 0.56 to
+0.97).
 <ul>
-<li>New users excludes those who had received a lipid lowering drug from three years before to six months after cohort entry</li>
+<li>New users excludes those who had received a lipid lowering drug from
+three years before to six months after cohort entry</li>
 </ul>
 </li>
-<li>HR&gt;1 was expected:people whose diabetes progresses are more likely to develop cardiovascular disease, an indication for statins.</li>
+<li>HR&gt;1 was expected:people whose diabetes progresses are more
+likely to develop cardiovascular disease, an indication for
+statins.</li>
 <li>This is a result of an analysis error. Why?</li>
 </ul>
 <ul>
-<li>Yee <em>et al.</em> Statin use in type 2 diabetes mellitus is associated with a delay in starting insulin (<a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full" class="uri">http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full</a>)</li>
+<li>Yee <em>et al.</em> Statin use in type 2 diabetes mellitus is
+associated with a delay in starting insulin (<a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full" class="external-link uri">http://onlinelibrary.wiley.com/doi/10.1111/j.1464-5491.2004.01263.x/full</a>)</li>
 </ul>
 </div>
-<div id="immortal-time-bias-example-contd" class="section level2">
-<h2 class="hasAnchor">
-<a href="#immortal-time-bias-example-contd" class="anchor"></a>Immortal time bias example (cont’d)</h2>
+<div class="section level3">
+<h3 id="immortal-time-bias-example-contd">Immortal time bias example (cont’d)<a class="anchor" aria-label="anchor" href="#immortal-time-bias-example-contd"></a>
+</h3>
 <ul>
 <li>What was the analysis error?
 <ul>
-<li>“new statin user” group was defined based on future initiation: knowledge unknown at the time of entry into the study</li>
-<li>guaranteed no events for statin users from cohort entry to start of statin use</li>
-<li>thus all persons in the <em>treated</em> group are “immortal” from time 0 until the initiation of statin treatment</li>
+<li>“new statin user” group was defined based on future initiation:
+knowledge unknown at the time of entry into the study</li>
+<li>guaranteed no events for statin users from cohort entry to start of
+statin use</li>
+<li>thus all persons in the <em>treated</em> group are “immortal” from
+time 0 until the initiation of statin treatment</li>
 <li>this period of immortality made treatment look more effective</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="parametric-survival-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#parametric-survival-models" class="anchor"></a>Parametric survival models</h1>
-<div id="what-are-parametric-survival-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-are-parametric-survival-models" class="anchor"></a>What are “parametric” survival models?</h2>
+<div class="section level2">
+<h2 id="parametric-survival-models">Parametric survival models<a class="anchor" aria-label="anchor" href="#parametric-survival-models"></a>
+</h2>
+<div class="section level3">
+<h3 id="what-are-parametric-survival-models">What are “parametric” survival models?<a class="anchor" aria-label="anchor" href="#what-are-parametric-survival-models"></a>
+</h3>
 <ul>
-<li>“Parametric” models estimate additional <em>parameters</em> for the baseline hazard, e.g.:
+<li>“Parametric” models estimate additional <em>parameters</em> for the
+baseline hazard, e.g.:
 <ul>
 <li>
 <strong>Weibull</strong>: hazard function is a polynomial</li>
 <li>
-<strong>exponential</strong>: hazard function is constant over time, survival function is exponential (special case of Weibull): e.g. healthy population with randomly occurring events</li>
+<strong>exponential</strong>: hazard function is constant over time,
+survival function is exponential (special case of Weibull): e.g. healthy
+population with randomly occurring events</li>
 <li>many other options for assumption of distributions</li>
 </ul>
 </li>
-<li>In most common implementation a log-transform of the time variable is used
+<li>In most common implementation a log-transform of the time variable
+is used
 <ul>
-<li>then can be interpreted as <em>Accelerated Failure Time</em> (AFT) models.</li>
+<li>then can be interpreted as <em>Accelerated Failure Time</em> (AFT)
+models.</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="coefficients-in-parametric-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#coefficients-in-parametric-models" class="anchor"></a>Coefficients in parametric models</h2>
+<div class="section level3">
+<h3 id="coefficients-in-parametric-models">Coefficients in parametric models<a class="anchor" aria-label="anchor" href="#coefficients-in-parametric-models"></a>
+</h3>
 <ul>
-<li>The interpretation of <span class="math inline">\(\beta\)</span> coefficients is different:
+<li>The interpretation of <span class="math inline">\(\beta\)</span>
+coefficients is different:
 <ul>
 <li>Cox model: <span class="math inline">\(log(HR)\)</span>
 </li>
-<li>AFT models: <span class="math inline">\(log(survival time ratio)\)</span>
+<li>AFT models: <span class="math inline">\(log(survival time
+ratio)\)</span>
 </li>
-<li>The sign is <em>opposite</em> (<em>i.e.</em> if one is positive the other is negative)</li>
+<li>The sign is <em>opposite</em> (<em>i.e.</em> if one is positive the
+other is negative)</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="why-use-a-parametric-survival-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#why-use-a-parametric-survival-model" class="anchor"></a>Why use a parametric survival model?</h2>
+<div class="section level3">
+<h3 id="why-use-a-parametric-survival-model">Why use a parametric survival model?<a class="anchor" aria-label="anchor" href="#why-use-a-parametric-survival-model"></a>
+</h3>
 <ul>
 <li>Can be more powerful if assumption is correct
 <ul>
@@ -489,16 +559,18 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 </li>
 <li>Easy to interpret: coefficients are <span class="math inline">\(log(survival time ratio)\)</span>
 </li>
-<li>Easy to fit: replace <code><a href="https://rdrr.io/pkg/survival/man/coxph.html">survival::coxph</a></code> with <code><a href="https://rdrr.io/pkg/survival/man/survreg.html">survival::survreg</a></code>
+<li>Easy to fit: replace <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph</a></code> with
+<code><a href="https://rdrr.io/pkg/survival/man/survreg.html" class="external-link">survival::survreg</a></code>
 </li>
 </ul>
 </div>
-<div id="why-not-to-use-a-parametric-survival-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#why-not-to-use-a-parametric-survival-model" class="anchor"></a>Why not to use a parametric survival model?</h2>
+<div class="section level3">
+<h3 id="why-not-to-use-a-parametric-survival-model">Why not to use a parametric survival model?<a class="anchor" aria-label="anchor" href="#why-not-to-use-a-parametric-survival-model"></a>
+</h3>
 <ul>
 <li>Depend on correct specification of baseline hazard model</li>
-<li>Even if correctly specified, may not provide much improvement in efficiency</li>
+<li>Even if correctly specified, may not provide much improvement in
+efficiency</li>
 <li>Still make a proportionality assumption, on survival functions</li>
 </ul>
 </div>
@@ -516,11 +588,13 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://waldronlab.io">Levi Waldron</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://waldronlab.io" class="external-link">Levi Waldron</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -528,6 +602,8 @@ log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} + \beta_2 
 
   
 
+
+  
 
   </body>
 </html>
