@@ -266,8 +266,7 @@ sampling variation</li>
 <h3 id="recall-previous-regression-models">Recall previous regression models<a class="anchor" aria-label="anchor" href="#recall-previous-regression-models"></a>
 </h3>
 <p><span class="math display">\[
-E[y_i|x_i] = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p
-x_{pi}
+E[y_i|x_i] = \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
 \]</span></p>
 <ul>
 <li>
@@ -285,12 +284,11 @@ dependent variable</li>
 coefficients</li>
 </ul>
 <p>For logistic regression: <span class="math display">\[
-Logit(P(x_i)) = log \left( \frac{P(x_i)}{1-P(x_i)} \right) = \beta_0 +
-\beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
+Logit(P(x_i)) = log \left( \frac{P(x_i)}{1-P(x_i)} \right) = \beta_1
+x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
 \]</span></p>
 <p>For log-linear regression: <span class="math display">\[
-log(E[y_i|x_i]) = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... +
-\beta_p x_{pi}
+log(E[y_i|x_i]) = \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{pi}
 \]</span></p>
 </div>
 </div>
@@ -306,8 +304,8 @@ right-censored, time-to-event outcome and predictors:
 <ul>
 <li>categorical variables (e.g., treatment groups)</li>
 <li>continuous variables <span class="math display">\[
-log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_0 + \beta_1 x_{1i} +
-\beta_2 x_{2i} + ... + \beta_p x_{pi}
+log(HR(x_i)) = log \frac{h(t|x_i)}{h_0(t)} = \beta_1 x_{1i} + \beta_2
+x_{2i} + ... + \beta_p x_{pi}
 \]</span>
 </li>
 </ul>
