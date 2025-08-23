@@ -68,8 +68,8 @@ leuk <- read_csv("leuk.csv")
 leuk <- leuk %>%
   mutate(group = factor(group, levels = c("Placebo", "6 MP")))
 kmfit <- survival::survfit(Surv(time, cens) ~ group, data = leuk)
-survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype=1:2)
-``````
+survminer::ggsurvplot(kmfit, risk.table = TRUE, linetype = 1:2)
+```
 
 ## The hazard function h(t)
 
@@ -104,8 +104,8 @@ Hazard function $h(t)$
 ```{r, echo=FALSE, message=FALSE}
 ## hazard plot
 library(muhaz)
-haztreat = with(leuk[leuk$group == "6 MP",], muhaz(time, cens))
-hazcontrol = with(leuk[leuk$group == "Placebo",], muhaz(time, cens))
+haztreat <- with(leuk[leuk$group == "6 MP", ], muhaz(time, cens))
+hazcontrol <- with(leuk[leuk$group == "Placebo", ], muhaz(time, cens))
 plot(hazcontrol,
      lwd = 2,
      xlab = "Follow-up time (weeks)",
@@ -156,11 +156,10 @@ ggsurvplot(
   ylab = "Survival Probability"
 )
 ## hazard plot
-leuk %>% group_by(group) %>% 
-  summarise(haz = list(muhaz(time, cens)))
+leuk %>% group_by(group) %>% summarise(haz = list(muhaz(time, cens)))
 
-haztreat = with(leuk[leuk$group == "6 MP",], muhaz(time, cens))
-hazcontrol = with(leuk[leuk$group == "Placebo",], muhaz(time, cens))
+haztreat <- with(leuk[leuk$group == "6 MP", ], muhaz(time, cens))
+hazcontrol <- with(leuk[leuk$group == "Placebo", ], muhaz(time, cens))
 plot(hazcontrol,
      lwd = 2,
      xlab = "Follow-up time (weeks)",
